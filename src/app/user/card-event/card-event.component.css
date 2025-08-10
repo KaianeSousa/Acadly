@@ -12,7 +12,7 @@
 }
 
 .card-body {
-  flex-grow: 1; /* Permite que o corpo do card preencha o espaço disponível */
+  flex-grow: 1; 
   display: flex;
   flex-direction: column;
 }
@@ -32,7 +32,7 @@
   color: #333;
   font-size: 0.9rem;
   line-height: 1.5;
-  flex-grow: 1; /* Permite que a descrição preencha o espaço vertical */
+  flex-grow: 1; 
 }
 
 .btn-light {
@@ -45,7 +45,7 @@
   transform: translateY(-2px);
 }
 
-/* Aplicar tamanhos mínimos apenas em telas maiores para preservar o visual desejado */
+/* Responsividade */
 @media (min-width: 992px) {
   .card {
     min-width: 80rem;
@@ -82,8 +82,8 @@
 
   .card-description {
     font-size: 0.85rem;
-    overflow-y: auto; /* Adiciona scroll se o texto for longo em telas menores */
-    max-height: 200px; /* Limite opcional para evitar expansão excessiva */
+    overflow-y: auto; 
+    max-height: 200px; 
   }
 
   .btn-light {
@@ -92,7 +92,6 @@
   }
 }
 
-/* Ajustes para telas pequenas */
 @media (max-width: 576px) {
   .card {
     padding: 0 10px;
