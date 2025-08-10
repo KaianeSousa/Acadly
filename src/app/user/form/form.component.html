@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center position-relative">
+  <div class="card form-body w-75 shadow-lg" style="top: -50px;"> <!-- Sobreposição com top negativo -->
+    <div class="card-body p-5"> <!-- Aumentei padding para mais altura interna -->
+      <h5 class="card-title text-center mb-4">Formulário de Inscrição</h5>
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label for="nome" class="form-label fw-bold">Nome</label>
+          <input type="text" class="form-control form-control-lg" id="nome" [(ngModel)]="nome" required>
+        </div>
+        <div class="mb-4">
+          <label for="email" class="form-label fw-bold">Email</label>
+          <input type="email" class="form-control form-control-lg" id="email" [(ngModel)]="email" required>
+        </div>
+        <div class="mb-4">
+          <label for="relacao" class="form-label fw-bold">Relação com o Evento</label>
+          <select class="form-select form-select-lg" id="relacao" [(ngModel)]="relacao" required>
+            <option value="">Selecione...</option>
+            <option value="estudante">Estudante</option>
+            <option value="professor">Professor</option>
+            <option value="visitante">Visitante</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-bold">Deseja participar do evento?</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="sim" value="sim" [(ngModel)]="participar" name="participar" required>
+            <label class="form-check-label" for="sim">Sim</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="nao" value="nao" [(ngModel)]="participar" name="participar" required>
+            <label class="form-check-label" for="nao">Não</label>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg w-50 btn-submit">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
