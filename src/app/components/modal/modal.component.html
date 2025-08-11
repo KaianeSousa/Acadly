@@ -1,0 +1,85 @@
+<div class="modal" *ngIf="isModalOpen">
+    <div class="modal__backdrop" (click)="close()"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Cadastro de Participante</h2>
+        <button class="modal__close" (click)="close()">×</button>
+      </div>
+      <form [formGroup]="participantForm" (ngSubmit)="onSubmit()" id="cadastro-form">
+        <div class="form-group">
+          <label for="nome">Nome <span class="required">*</span></label>
+          <input
+            type="text"
+            id="nome"
+            formControlName="nome"
+            placeholder="Digite seu nome completo"
+          />
+          <span class="error" *ngIf="nome?.touched && nome?.invalid">
+            <span *ngIf="nome?.errors?.['required']">Nome é obrigatório.</span>
+            <span *ngIf="nome?.errors?.['minlength']">Mínimo de 2 caracteres.</span>
+          </span>
+        </div>
+  
+        <div class="form-group">
+          <label for="email">E-mail <span class="required">*</span></label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="seu.email@exemplo.com"
+          />
+          <span class="error" *ngIf="email?.touched && email?.invalid">
+            <span *ngIf="email?.errors?.['required']">E-mail é obrigatório.</span>
+            <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
+          </span>
+        </div>
+  
+        <div class="form-group">
+            <label>
+              Tipo de ingresso <span class="required">*</span>
+            </label>
+            <div
+              class="custom-select"
+              (click)="toggleDropdown()"
+              [class.open]="dropdownOpen"
+              tabindex="0"
+              (blur)="closeDropdown()"
+            >
+              <span class="selected-value">
+                {{ participantForm.get('tipoIngresso')?.value || 'Selecione o tipo de ingresso' }}
+              </span>
+              <span class="arrow">&#9662;</span>
+              <ul class="options-list" *ngIf="dropdownOpen">
+                <li
+                  *ngFor="let classification of classifications"
+                  (click)="selectOption(classification.coClassificar, $event)"
+                  [class.selected]="participantForm.get('tipoIngresso')?.value === classification.coClassificar"
+                >
+                  {{ classification.coClassificar }}
+                </li>
+              </ul>
+            </div>
+            <span class="error" *ngIf="tipoIngresso?.touched && tipoIngresso?.invalid">
+              Tipo de ingresso é obrigatório.
+            </span>
+          </div>
+          
+  
+        <div class="form-group">
+          <label>Presença confirmada</label>
+          <div class="checkbox-group">
+            <input type="checkbox" id="presenca" formControlName="presenca" />
+            <label for="presenca">Confirmo minha presença no evento</label>
+          </div>
+        </div>
+  
+        <div class="form-actions">
+          <button type="submit">Cadastrar</button>
+          <button type="button" (click)="close()">Cancelar</button>
+        </div>
+  
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </form>
+    </div>
+  </div>
+  
