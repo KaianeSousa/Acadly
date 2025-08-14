@@ -1,0 +1,35 @@
+.banner {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+  
+    &__background {
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(216, 206, 206, 0), rgba(0, 0, 0, 0.7)), 
+      url("../../../assets/background.png");
+      background-size: cover;
+      background-position: center;
+    }
+  
+    &__content {
+      position: absolute;
+      bottom: 40px; 
+      left: 0;
+      right: 0;
+      padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner {
+      height: auto; 
+    }
+  
+    .banner__background {
+      width: 100vw;   
+      height: auto;   
+      aspect-ratio: 16/9; 
+    }
+}

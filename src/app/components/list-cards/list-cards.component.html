@@ -1,0 +1,22 @@
+<div class="list">
+  <div class="list__text">
+    <h3>Confira nossa programação</h3>
+  </div>
+  <div class="list__sort">
+    <ng-select (open)="getAllActivities()"></ng-select>
+  </div>
+
+  <div class="carousel__container">
+    @if (!isMobile) {
+      <div class="carousel__nav-prev"></div>
+      <div class="carousel__nav-next"></div>
+    }
+    <swiper-container #swiperContainer>
+      @for (activity of activities.data; track activity.id) {
+        <swiper-slide>
+          <app-cards [activity]="activity"></app-cards>
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+</div>

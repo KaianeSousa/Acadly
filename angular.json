@@ -16,6 +16,12 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets/"
+              },
               {
                 "glob": "**/*",
                 "input": "public"
@@ -76,6 +82,10 @@
             "assets": [
               {
                 "glob": "**/*",
+                "input": "src/assets"
+              },
+              {
+                "glob": "**/*",
                 "input": "public"
               }
             ],
@@ -85,6 +95,12 @@
           }
         }
       }
+    }
+  },
+  "cli": {
+    "analytics": "e100c1a1-357d-4afe-bdca-79b7cfd1c96a",
+    "cache": {
+      "enabled": false
     }
   }
 }

@@ -1,0 +1,47 @@
+<div class="scanner-container">
+  <h1>Check-in do Evento</h1>
+
+  <div class="scanner-wrapper">
+    <zxing-scanner
+      (scanSuccess)="onScanSuccess($event)"
+      (permissionResponse)="onPermissionResponse($event)"
+      [formats]="allowedFormats"
+      [enable]="scannerEnabled"
+
+      [class.scanner-inactive]="!scannerEnabled">
+    </zxing-scanner>
+  </div>
+
+  @if (hasPermission === false) {
+    <div class="feedback-error">
+      Você precisa permitir o acesso à câmera para fazer o check-in.
+    </div>
+  }
+
+  @if (isProcessing) {
+    <div class="feedback-processing">
+      Validando {{ scannedParticipantName || 'QR Code' }}, por favor aguarde...
+    </div>
+  }
+
+  @if (validationResult) {
+    <div class="feedback" [ngClass]="validationResult.cssClass">
+
+      <h2>{{ validationResult.message }}</h2>
+
+      @if (validationResult.participantName) {
+        <p>
+          <strong>Participante:</strong> {{ validationResult.participantName }}
+        </p>
+      }
+
+      @if (validationResult.eventName) {
+        <p>
+          <strong>Evento:</strong> {{ validationResult.eventName }}
+        </p>
+      }
+
+      <button (click)="resetScanner()">Escanear Próximo</button>
+    </div>
+  }
+</div>
