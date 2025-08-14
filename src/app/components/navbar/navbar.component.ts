@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import {CommonModule, NgOptimizedImage} from "@angular/common";
-import { Router } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { User } from '../../core/types/User';
 import { AuthService } from '../../core/service/auth-service';
 
@@ -49,6 +49,10 @@ export class NavbarComponent  {
 
   goToAboutUspage() {
     return this.router.navigate(['/app-about-us'])
+  }
+
+  goToCheckIn() {
+    return this.router.navigate(['/check-in'])
   }
 
   logout() {
