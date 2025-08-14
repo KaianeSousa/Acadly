@@ -12,7 +12,7 @@
       <div class="carousel__nav-next"></div>
     }
     <swiper-container #swiperContainer>
-      @for (activity of activities; track activity.name) {
+      @for (activity of activities.data; track activity.id) {
         <swiper-slide>
           <app-cards [activity]="activity"></app-cards>
         </swiper-slide>

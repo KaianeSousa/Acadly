@@ -1,11 +1,21 @@
-import { Component, OnInit, inject, HostListener, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  HostListener,
+  ViewChild,
+  AfterViewInit,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { register } from 'swiper/element/bundle';
+import {register, SwiperContainer} from 'swiper/element/bundle';
 import { Activity } from '../../core/types/Activity';
 import { ActivityService } from '../../core/service/activity-service';
 import { CardsComponent } from '../cards/cards.component';
+import {Pagination} from '../../core/types/Pagination';
 
 register();
 
@@ -24,10 +34,20 @@ register();
 })
 export class ListCardsComponent implements OnInit, AfterViewInit {
   private assetService = inject(ActivityService);
-  activities: Activity[] = [];
+  activities: Pagination<Activity> = {
+    data: [],
+    pagination: {
+      page: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
+    },
+  };
   isMobile = false;
+  private viewInitialized = false;
+  private swiperInitialized = false;
 
-  @ViewChild('swiperContainer') swiperContainerRef!: any;
+  @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
 
   ngOnInit(): void {
     this.checkScreen();
@@ -35,6 +55,7 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.viewInitialized = true;
     this.initSwiperIfNeeded();
   }
 
@@ -49,19 +70,28 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
   }
 
   getAllActivities(): void {
-    this.assetService.getAllActivities().subscribe(data => {
-      this.activities = data;
-      this.initSwiperIfNeeded();
-    });
+      this.assetService.getAllActivities().subscribe(data => {
+        this.activities = data;
+        this.initSwiperIfNeeded();
+      });
   }
 
   private initSwiperIfNeeded() {
-    if (this.swiperContainerRef && this.activities.length > 0) {
+    if (this.activities.data.length > 0 && this.viewInitialized) {
       this.initSwiper();
     }
   }
 
   private initSwiper() {
+    if (!this.swiperContainerRef?.nativeElement) {
+      console.error("Swiper container não encontrado!");
+      return;
+    }
+
+    if (this.swiperInitialized) {
+      this.swiperContainerRef.nativeElement.swiper?.update();
+      return;
+    }
     const swiperParams = this.isMobile
       ? {
           slidesPerView: 1,

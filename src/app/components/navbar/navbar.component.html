@@ -7,8 +7,8 @@
         (click)="goToHome()"
         (keydown.enter)="goToHome()"
         (keydown.space)="goToHome()"
-        >         
-        <img src="../../../assets/logo.png" alt="Logo" width="100px" />
+        >
+        <img ngSrc="assets/logo.png" alt="Logo" width="60" height="60"/>
       </a>
       <div class="navbar__title">Acadly</div>
     </div>
@@ -16,8 +16,8 @@
   <div class="navbar__center">
       <div class="navbar__links">
         <ul>
-          <li 
-            role="button"  
+          <li
+            role="button"
             tabindex="0"
             (click)="goToEventsPage()"
             (keydown.enter)="goToEventsPage()"
@@ -25,7 +25,7 @@
           >
             Eventos
           </li>
-          <li 
+          <li
             role="button"
             tabindex="0"
             (click)="goToInstitutionPage()"
@@ -34,7 +34,7 @@
           >
             Instituição
         </li>
-          <li 
+          <li
             role="button"
             tabindex="0"
             (click)="goToAboutUspage()"
@@ -55,13 +55,13 @@
       (click)="goToLogin()"
       (keydown.enter)="goToLogin()"
       (keydown.space)="goToLogin()"
-      > 
+      >
       Entrar
     </a>
 
-    <div 
-      *ngIf="isLoggedIn" 
-      class="navbar__user-menu" 
+    <div
+      *ngIf="isLoggedIn"
+      class="navbar__user-menu"
       (click)="toggleDropdown()"
       (keydown.enter)="toggleDropdown()"
       (keydown.space)="toggleDropdown()"
@@ -74,7 +74,7 @@
       <div class="navbar__dropdown" *ngIf="openDropdown" (click)="$event.stopPropagation()">
         <ul role="menu">
           <li>
-            <a 
+            <a
               class="navbar__profile"
               role="menuitem"
               (click)="goToProfile()"
@@ -85,7 +85,7 @@
             </a>
           </li>
           <li>
-            <button 
+            <button
               class="navbar__logout"
               role="menuitem"
               (click)="logout()"
@@ -99,9 +99,9 @@
       </div>
     </div>
   </div>
-  
+
   <button class="navbar__toggle" (click)="openMenu = !openMenu">
-      &#9776; 
+      &#9776;
   </button>
 </nav>
 

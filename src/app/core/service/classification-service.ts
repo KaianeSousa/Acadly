@@ -11,9 +11,13 @@ export class ClassificationService {
 
     private readonly endpoint = 'http://localhost:8080/classification'
     private http = inject(HttpClient);
-    
+
     getClassificationsByType(): Observable<Classification[]> {
         const type = 'EV';
         return this.http.get<Classification[]>(`${this.endpoint}/find-by-type/${type}`);
-    }      
+    }
+
+    getClassificationTypes(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.endpoint}/types`);
+    }
 }

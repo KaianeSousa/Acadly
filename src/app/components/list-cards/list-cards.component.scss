@@ -104,7 +104,7 @@
     }
 
     .carousel__nav-prev {
-      left: -60px; 
+      left: -60px;
     }
 
     .carousel__nav-next {
@@ -129,12 +129,12 @@
       }
 
       swiper-container::part(pagination) {
-        display: flex !important; 
+        display: flex !important;
       }
 
       .carousel__nav-prev,
       .carousel__nav-next {
-        display: none !important; 
+        display: none !important;
       }
     }
   }
@@ -142,11 +142,11 @@
   @media (min-width: 769px) {
     .carousel__container {
       swiper-container {
-        padding: 20px 0; 
+        padding: 20px 0;
       }
 
       .carousel-card {
-        max-width: 333px; 
+        max-width: 333px;
       }
     }
   }

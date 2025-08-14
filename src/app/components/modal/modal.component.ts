@@ -5,7 +5,7 @@ import { Classification } from '../../core/types/Classification';
 import { Participant } from '../../core/types/Participant';
 import { ClassificationService } from '../../core/service/classification-service';
 import { ParticipantService } from '../../core/service/participant-service';
-import { EventService } from '../../core/service/event-service'; 
+import { EventService } from '../../core/service/event-service';
 
 @Component({
   selector: 'app-modal',
@@ -16,9 +16,9 @@ import { EventService } from '../../core/service/event-service';
 })
 export class ModalComponent implements OnInit {
   eventId?: number;
-  @Input() classifications: Classification[] = [];
   @Output() closeModal = new EventEmitter<void>();
   participantForm: FormGroup;
+  classificationTypes: string[] = [];
   isModalOpen = false;
   dropdownOpen = false;
   errorMessage: string | null = null;
@@ -33,29 +33,29 @@ export class ModalComponent implements OnInit {
       nome: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       presenca: [false],
-      tipoIngresso: ['', Validators.required],  
+      tipoIngresso: ['', Validators.required],
     });
   }
   ngOnInit(): void {
-    this.classificationService.getClassificationsByType().subscribe({
-      next: (data) => {
-        this.classifications = data;
-      },
-      error: (error) => {
-        this.errorMessage = 'Erro ao carregar classificações: ' + (error.message || 'Tente novamente.');
-      },
-    });
-    
+    this.getTypes();
+
     this.eventService.getEvent().subscribe({
       next: (eventData) => {
-        this.eventId = eventData.id;  
+        this.eventId = eventData.id;
       },
       error: (error) => {
         this.errorMessage = 'Erro ao carregar evento ativo: ' + (error.message || 'Tente novamente.');
       }
     });
   }
-  
+
+  getTypes() {
+    this.classificationService.getClassificationTypes().subscribe( data => {
+      this.classificationTypes = data;
+      console.log(data);
+    })
+  }
+
 
   openModal() {
     this.isModalOpen = true;
@@ -66,7 +66,7 @@ export class ModalComponent implements OnInit {
     this.isModalOpen = false;
     this.participantForm.reset();
     this.errorMessage = null;
-    this.closeModal.emit(); 
+    this.closeModal.emit();
   }
 
   onSubmit() {
@@ -75,12 +75,11 @@ export class ModalComponent implements OnInit {
       const participant: Participant = {
         name: this.participantForm.get('nome')?.value,
         email: this.participantForm.get('email')?.value,
-        participantType: this.participantForm.get('tipoIngresso')?.value.toUpperCase(),
+        participantType: this.participantForm.get('tipoIngresso')?.value,
       };
 
       this.participantService.createParticipant(this.eventId, participant).subscribe({
-        next: (response) => {
-          alert(response);
+        next: () => {
           this.close();
         },
         error: (error) => {
@@ -105,7 +104,7 @@ export class ModalComponent implements OnInit {
       this.participantForm.get('tipoIngresso')?.markAsTouched();
     }, 150);
   }
-  
+
 
   selectOption(value: string, event: MouseEvent) {
     event.stopPropagation();
@@ -116,7 +115,7 @@ export class ModalComponent implements OnInit {
     control?.updateValueAndValidity();
     this.dropdownOpen = false;
   }
-  
+
 
   get nome() {
     return this.participantForm.get('nome');

@@ -13,7 +13,7 @@
             type="text"
             id="nome"
             formControlName="nome"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite seu primeiro nome"
           />
           @if (nome?.touched && nome?.invalid) {
             <span class="error">
@@ -62,14 +62,19 @@
             <span class="arrow">&#9662;</span>
             @if (dropdownOpen) {
               <ul class="options-list">
-                <li
-                  *ngFor="let classification of classifications"
-                  (click)="selectOption(classification.coClassification, $event)"
-                  [class.selected]="participantForm.get('tipoIngresso')?.value === classification.coClassification"
-                >
-                  {{ classification.coClassification }}
-                </li>
+                @for (type of classificationTypes; track type) {
+                  <li
+                    [class.selected]="participantForm.get('tipoIngresso')?.value === type"
+                    (click)="selectOption(type, $event)"
+                  >
+                    <span (click)="selectOption(type, $event)">
+                      {{ type }}
+                    </span>
+                  </li>
+                }
+
               </ul>
+
             }
           </div>
           @if (tipoIngresso?.touched && tipoIngresso?.invalid) {

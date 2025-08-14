@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import { Router } from "@angular/router";
 import { User } from '../../core/types/User';
 import { AuthService } from '../../core/service/auth-service';
@@ -7,7 +7,7 @@ import { AuthService } from '../../core/service/auth-service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [ CommonModule ],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -32,8 +32,8 @@ export class NavbarComponent  {
 
   goToLogin() {
     this.router.navigate(['/app-login'])
-  } 
-  
+  }
+
   goToProfile() {
     return this.router.navigate(['/app-profile'])
   }

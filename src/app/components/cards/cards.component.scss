@@ -1,15 +1,14 @@
 .card {
   background: var(--primary-color);
-  border: 2px solid var(--tertiary-color);
-  border-radius: 8px;
-  box-shadow: 
-    0 0 12px rgba(97, 2, 2, 0.651),
+  border-radius: 10px;
+  box-shadow:
+    0 0 12px rgba(97, 2, 2, 0.04),
     0 2px 8px rgba(0,0,0,0.1);
   padding: 1rem;
   min-height: 100px;
   width: 100%;
   max-width: 300px;
-  height: 280px;
+  height: auto;
   margin: 10px auto;
   transition: transform 0.2s ease;
   box-sizing: border-box;
@@ -21,21 +20,21 @@
     &__title {
       margin: 0.5rem 0;
       color: var(--resources-color);
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: bold;
     }
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1rem;
       color: var(--resources-color);
-      font-weight: 500; 
+      font-weight: 500;
     }
 
     p {
       font-size: 1.0rem;
       color: var(--secondary-color);
       font-weight: 500;
-      margin: 0.2rem 0; 
+      margin: 0.2rem 0;
     }
 
     h4 {
@@ -43,6 +42,13 @@
       color: var(--resources-color);
       font-weight: 500;
     }
+  }
+
+  .description {
+    font-size: 1rem;
+    color: var(--tertiary-color);
+    font-weight: 500;
+    margin-top: 1.5rem;
   }
 }
 
@@ -53,7 +59,7 @@
     max-height: 320px;
     margin: 30px auto;
     padding: 1.5rem;
-    height: auto; 
+    height: auto;
     min-height: 280px;
 
     &__content {
@@ -61,7 +67,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px; 
+      gap: 10px;
 
       &__title {
         font-size: 1.6rem;

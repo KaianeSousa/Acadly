@@ -16,7 +16,7 @@
         align-items: start;
         gap: 1rem;
         justify-self: start;
-    
+
         &__title {
             font-size: 32px;
             font-weight: bold;
@@ -29,7 +29,7 @@
             flex-grow: 0;
             margin-right: 3rem;
             justify-self: self-start;
-        
+
             img {
                 margin-right: 20px;
             }
@@ -43,8 +43,8 @@
     }
 
     &__links {
-        border-radius: 50px;
-        padding: 5px 60px;
+        border-radius: 10px;
+        padding: 5px;
         width: 100%;
         height: 70px;
 
@@ -56,12 +56,11 @@
             padding: 0;
 
             li {
-                font-size: 1.3rem;
-                font-weight: bold;
+                font-size: 1.2rem;
                 color: var(--secondary-color);
                 cursor: pointer;
                 transition: color 0.3s ease;
-                
+
                 &:hover {
                     color: var(--tertiary-color);
                 }
@@ -79,36 +78,42 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 200px;
-        height: 70px;
+        width: 120px;
+        height: 50px;
         background-color: var(--secondary-color);
         color: var(--primary-color);
         border: 1px solid var(--secondary-color);
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 20px;
+        border-radius: 10px;
+        font-size: 1rem;
         cursor: pointer;
         text-transform: uppercase;
         text-decoration: none;
         transition: all 0.3s ease;
 
         &:hover {
-            background-color: var(--tertiary-color);
+            background-color: var(--resources-color);
             color: var(--primary-color);
         }
     }
 
     &__toggle {
         display: none;
-        font-size: 28px;
+        font-size: 1.2rem;
         background: none;
         border: none;
         color: var(--primary-color);
         cursor: pointer;
+        transition: all 0.3s ease;
+
+
+        &:hover {
+          background-color: var(--resources-color);
+          color: var(--primary-color);
+        }
     }
 }
 
-  
+
 @media screen and (max-width: 1024px) {
 .navbar {
         grid-template-columns: auto 1fr auto;
@@ -143,30 +148,29 @@
         }
 
         &__links {
-            padding: 5px 60px;
+            padding: 5px;
 
             ul {
                 gap: 1.5rem;
-                font-size: 1.0rem;
+                font-size: 0.8rem;
             }
         }
 
         &__button {
-            width: clamp(120px, 30vw, 200px);
             padding-right: 0;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
     }
     @media screen and (max-width: 768px) {
         .navbar {
             display: grid;
-            grid-template-columns: auto 1fr auto; 
+            grid-template-columns: auto 1fr auto;
             padding: 0.8rem 1.5rem;
             position: relative;
 
             &__brand {
                 grid-column: 1;
-                margin-right: auto; 
+                margin-right: auto;
                 z-index: 101;
             }
 
@@ -176,40 +180,40 @@
             }
 
             &__toggle {
-                grid-column: 3; 
+                grid-column: 3;
                 display: block;
                 padding: 0.5rem 1rem;
                 margin-left: auto;
                 position: relative;
-                z-index: 101; 
+                z-index: 101;
                 background-color: var(--secondary-color);
                 border-radius: 10px;
-                justify-self: end; 
+                justify-self: end;
             }
 
             &.menu-aberto {
-                grid-template-rows: auto 1fr auto; 
+                grid-template-rows: auto 1fr auto;
 
                 .navbar__brand {
-                    margin-bottom: 0; 
+                    margin-bottom: 0;
                 }
 
                 .navbar__center,
                 .navbar__right {
                     display: flex;
-                    grid-column: 1 / -1; 
+                    grid-column: 1 / -1;
                     width: 100%;
                     justify-content: center;
                     align-items: center;
                 }
 
                 .navbar__center {
-                    grid-row: 2; 
+                    grid-row: 2;
                     margin-top: 1rem;
                 }
 
                 .navbar__right {
-                    grid-row: 3; 
+                    grid-row: 3;
                     justify-content: center;
                     margin-top: 1rem;
                 }
@@ -233,7 +237,7 @@
                             border-radius: 8px;
 
                             &:hover {
-                                background-color: var(--resources-color);
+                                background-color: var(--tertiary-color);
                             }
                         }
                     }

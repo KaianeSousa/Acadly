@@ -3,9 +3,9 @@
     <div class="container__card-body">
       <div class="container__row">
         <div class="container__col container__col--image">
-          <img src="../../assets/image.png" alt="Image" class="container__image">
+          <img ngSrc="assets/image.png" alt="Image" class="container__image" width="708" height="352">
         </div>
-        
+
         <div class="container__col container__col--content">
           <h5 class="container__title">{{ event?.name }}</h5>
           <p class="container__date text-muted">
@@ -14,7 +14,7 @@
           <p class="container__subtitle">{{ event?.description }}</p>
           <div class="container_button__area">
             <div class="container_button__area">
-              <button class="container__button__area__btn" 
+              <button class="container__button__area__btn"
                       [attr.aria-label]="'Cadastre sua presença no ' + event?.name"
                       (click)="openParticipantModal()">
                 Cadastre sua presença
