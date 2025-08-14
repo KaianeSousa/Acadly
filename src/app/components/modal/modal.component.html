@@ -1,4 +1,5 @@
-<div class="modal" *ngIf="isModalOpen">
+@if (isModalOpen) {
+  <div class="modal">
     <div class="modal__backdrop" (click)="close()"></div>
     <div class="modal__content">
       <div class="modal__header">
@@ -14,12 +15,18 @@
             formControlName="nome"
             placeholder="Digite seu nome completo"
           />
-          <span class="error" *ngIf="nome?.touched && nome?.invalid">
-            <span *ngIf="nome?.errors?.['required']">Nome é obrigatório.</span>
-            <span *ngIf="nome?.errors?.['minlength']">Mínimo de 2 caracteres.</span>
-          </span>
+          @if (nome?.touched && nome?.invalid) {
+            <span class="error">
+              @if (nome?.errors?.['required']) {
+                <span>Nome é obrigatório.</span>
+              }
+              @if (nome?.errors?.['minlength']) {
+                <span>Mínimo de 2 caracteres.</span>
+              }
+            </span>
+          }
         </div>
-  
+
         <div class="form-group">
           <label for="email">E-mail <span class="required">*</span></label>
           <input
@@ -28,43 +35,48 @@
             formControlName="email"
             placeholder="seu.email@exemplo.com"
           />
-          <span class="error" *ngIf="email?.touched && email?.invalid">
-            <span *ngIf="email?.errors?.['required']">E-mail é obrigatório.</span>
-            <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
-          </span>
+          @if (email?.touched && email?.invalid) {
+            <span class="error">
+              @if (email?.errors?.['required']) {
+                <span>E-mail é obrigatório.</span>
+              }
+              @if (email?.errors?.['email']) {
+                <span>E-mail inválido.</span>
+              }
+            </span>
+          }
         </div>
-  
+
         <div class="form-group">
-            <label>
-              Tipo de ingresso <span class="required">*</span>
-            </label>
-            <div
-              class="custom-select"
-              (click)="toggleDropdown()"
-              [class.open]="dropdownOpen"
-              tabindex="0"
-              (blur)="closeDropdown()"
-            >
-              <span class="selected-value">
-                {{ participantForm.get('tipoIngresso')?.value || 'Selecione o tipo de ingresso' }}
-              </span>
-              <span class="arrow">&#9662;</span>
-              <ul class="options-list" *ngIf="dropdownOpen">
+          <label>Tipo de ingresso <span class="required">*</span></label>
+          <div
+            class="custom-select"
+            (click)="toggleDropdown()"
+            [class.open]="dropdownOpen"
+            tabindex="0"
+            (blur)="closeDropdown()"
+          >
+            <span class="selected-value">
+              {{ participantForm.get('tipoIngresso')?.value || 'Selecione o tipo de ingresso' }}
+            </span>
+            <span class="arrow">&#9662;</span>
+            @if (dropdownOpen) {
+              <ul class="options-list">
                 <li
                   *ngFor="let classification of classifications"
-                  (click)="selectOption(classification.coClassificar, $event)"
-                  [class.selected]="participantForm.get('tipoIngresso')?.value === classification.coClassificar"
+                  (click)="selectOption(classification.coClassification, $event)"
+                  [class.selected]="participantForm.get('tipoIngresso')?.value === classification.coClassification"
                 >
-                  {{ classification.coClassificar }}
+                  {{ classification.coClassification }}
                 </li>
               </ul>
-            </div>
-            <span class="error" *ngIf="tipoIngresso?.touched && tipoIngresso?.invalid">
-              Tipo de ingresso é obrigatório.
-            </span>
+            }
           </div>
-          
-  
+          @if (tipoIngresso?.touched && tipoIngresso?.invalid) {
+            <span class="error">Tipo de ingresso é obrigatório.</span>
+          }
+        </div>
+
         <div class="form-group">
           <label>Presença confirmada</label>
           <div class="checkbox-group">
@@ -72,14 +84,16 @@
             <label for="presenca">Confirmo minha presença no evento</label>
           </div>
         </div>
-  
+
         <div class="form-actions">
           <button type="submit">Cadastrar</button>
           <button type="button" (click)="close()">Cancelar</button>
         </div>
-  
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
       </form>
     </div>
   </div>
-  
+}

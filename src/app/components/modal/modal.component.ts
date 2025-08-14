@@ -37,7 +37,6 @@ export class ModalComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log('ModalComponent ngOnInit executado');
     this.classificationService.getClassificationsByType().subscribe({
       next: (data) => {
         this.classifications = data;
@@ -67,15 +66,16 @@ export class ModalComponent implements OnInit {
     this.isModalOpen = false;
     this.participantForm.reset();
     this.errorMessage = null;
-    this.closeModal.emit();
+    this.closeModal.emit(); 
   }
 
   onSubmit() {
+    console.log(this.eventId);
     if (this.participantForm.valid && this.eventId) {
       const participant: Participant = {
         name: this.participantForm.get('nome')?.value,
         email: this.participantForm.get('email')?.value,
-        participantType: this.participantForm.get('tipoIngresso')?.value || 'DISCENTE',
+        participantType: this.participantForm.get('tipoIngresso')?.value.toUpperCase(),
       };
 
       this.participantService.createParticipant(this.eventId, participant).subscribe({
