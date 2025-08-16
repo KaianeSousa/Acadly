@@ -3,6 +3,9 @@
 }
 
 .event-card {
+  display: flex;
+  flex-direction: column;
+
   background-color: var(--primary-color, #fff);
   border-radius: 12px;
   border: 1px solid #e0e0e0;
@@ -11,6 +14,10 @@
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
+  &--active {
+    border-color: #a9ddb3;
+    border-width: 2px;
+  }
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -37,6 +44,13 @@
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--secondary-color, #333);
+}
+
+.card-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
 }
 
 .status {
@@ -92,4 +106,28 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  color: #a0aec0;
+
+  &:hover {
+    background-color: #fff5f5; // Fundo vermelho claro no hover
+    color: #e53e3e;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
