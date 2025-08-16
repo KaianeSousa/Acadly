@@ -1,0 +1,48 @@
+<div class="management-page">
+  <div class="page-header">
+    <h2>Gerenciamento de Eventos</h2>
+    <button (click)="onAddEvent()" class="add-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <span>Adicionar Evento</span>
+    </button>
+  </div>
+
+  @if (events$ | async; as eventsResult) {
+    @if (eventsResult.data.length > 0) {
+      <div class="events-grid">
+        @for (event of eventsResult.data; track event.id) {
+          <app-event-admin-card
+            [event]="event"
+            (cardClick)="onEventSelected($event)"
+          ></app-event-admin-card>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <h3>Nenhum evento encontrado</h3>
+        <p>Parece que não há nada aqui. Que tal criar um novo evento?</p>
+      </div>
+    }
+  } @else {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Carregando eventos...</p>
+    </div>
+  }
+
+</div>
+
+@if (isModalVisible) {
+  <app-event-modal-form
+    [event]="selectedEvent"
+    (close)="closeModal()"
+    (save)="saveEvent($event)"
+  ></app-event-modal-form>
+}
