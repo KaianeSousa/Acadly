@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Classification } from '../../core/types/Classification';
@@ -32,7 +32,7 @@ export class ModalComponent implements OnInit {
     this.participantForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      presenca: [false],
+      presenca: [true],
       tipoIngresso: ['', Validators.required],
     });
   }
@@ -41,7 +41,7 @@ export class ModalComponent implements OnInit {
 
     this.eventService.getEvent().subscribe({
       next: (eventData) => {
-        this.eventId = eventData.id;
+        this.eventId = eventData.id!;
       },
       error: (error) => {
         this.errorMessage = 'Erro ao carregar evento ativo: ' + (error.message || 'Tente novamente.');
@@ -52,10 +52,8 @@ export class ModalComponent implements OnInit {
   getTypes() {
     this.classificationService.getClassificationTypes().subscribe( data => {
       this.classificationTypes = data;
-      console.log(data);
     })
   }
-
 
   openModal() {
     this.isModalOpen = true;

@@ -33,7 +33,6 @@ export class CheckInScanner {
   }
 
   onScanSuccess(qrCodeString: string) {
-
     if (this.isProcessing || !this.scannerEnabled) {
       return;
     }

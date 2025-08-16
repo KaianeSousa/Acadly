@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Participant } from "../types/Participant";
 import { ParticipantResponseDTO } from "../types/Participant/response";
+import {environment} from '../../../environment/enviroment';
 
 @Injectable({
     providedIn: 'root'
@@ -10,11 +11,11 @@ import { ParticipantResponseDTO } from "../types/Participant/response";
 
 export class ParticipantService {
 
-    private readonly endpoint = 'http://localhost:8080/participant'
+    private readonly apiUrl = `${environment.apiUrl}/participant`;
     private http = inject(HttpClient);
 
-    
+
     createParticipant(eventId: number, participant: Participant): Observable<ParticipantResponseDTO> {
-        return this.http.post<ParticipantResponseDTO>(`${this.endpoint}/create-participation/${eventId}`, participant);
+        return this.http.post<ParticipantResponseDTO>(`${this.apiUrl}/create-participation/${eventId}`, participant);
     }
 }

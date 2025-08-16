@@ -6,6 +6,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { HeroSectionComponent } from '../../components/hero-section/hero-section.component';
 import { ListCardsComponent } from '../../components/list-cards/list-cards.component';
+import {NavbarComponent} from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +18,9 @@ import { ListCardsComponent } from '../../components/list-cards/list-cards.compo
     FooterComponent,
     BannerComponent,
     HeroSectionComponent,
-    ListCardsComponent
-],
+    ListCardsComponent,
+    NavbarComponent
+  ],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
