@@ -1,22 +1,23 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AuthService} from '../../core/service/auth-service';
-import {Auth} from '../../core/types/User/auth';
-import {NgOptimizedImage} from '@angular/common';
-import {AuthForm} from '../../components/auth-form/auth-form';
+import { Component, OnInit, inject } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
+import { Validators } from '@angular/forms';
+import { Auth } from '../../core/types/User/auth';
+import { AuthService } from '../../core/service/auth-service';
+import { AuthForm } from '../../components/auth-form/auth-form';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-employee-login',
   imports: [
     ReactiveFormsModule,
     NgOptimizedImage,
     AuthForm
   ],
-  templateUrl: './admin-login.html',
-  styleUrl: './admin-login.scss'
+  templateUrl: './employee-login.html',
+  styleUrl: './employee-login.scss'
 })
-export class AdminLogin implements OnInit {
+export class EmployeeLogin implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -55,4 +56,6 @@ export class AdminLogin implements OnInit {
   goToHome(): void {
     this.router.navigate(['/']);
   }
+
 }
+

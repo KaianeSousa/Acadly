@@ -1,0 +1,123 @@
+.management-page {
+    h2 {
+      font-size: 2rem;
+      color: #2c3e50;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+    }
+  }
+  
+  .add-button {
+    background-color: var(--secondary-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    border: none;
+    border-radius: .8rem;
+    font-size: 1rem;
+    font-weight: 200;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      background-color: var(--tertiary-color);
+      color: var(--secondary-color);
+    }
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    min-height: 300px;
+    text-align: center;
+    color: #6c757d;
+    font-family: var(--font-family-primary);
+  
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #e9ecef;
+      border-top: 5px solid var(--secondary-color, #3498db);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+  
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    min-height: 300px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 1px dashed #dee2e6;
+    font-family: var(--font-family-primary);
+  
+    svg {
+      color: #adb5bd;
+      margin-bottom: 1.5rem;
+    }
+  
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #495057;
+    }
+  
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: #6c757d;
+      max-width: 350px;
+    }
+  }
+  
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  
+  

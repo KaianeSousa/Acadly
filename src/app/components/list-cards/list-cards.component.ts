@@ -6,9 +6,11 @@ import {
   ViewChild,
   AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef
+  ElementRef,
+  Inject,
+  PLATFORM_ID
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {register, SwiperContainer} from 'swiper/element/bundle';
@@ -33,6 +35,7 @@ register();
   styleUrls: ['./list-cards.component.scss']
 })
 export class ListCardsComponent implements OnInit, AfterViewInit {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
   private assetService = inject(ActivityService);
   activities: Pagination<Activity> = {
     data: [],
@@ -50,7 +53,9 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
 
   ngOnInit(): void {
-    this.checkScreen();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreen();
+    }
     this.getAllActivities();
   }
 
@@ -61,12 +66,16 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   onResize() {
-    this.checkScreen();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreen();
+    }
     this.initSwiperIfNeeded();
   }
 
   checkScreen() {
-    this.isMobile = window.innerWidth <= 768;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
   }
 
   getAllActivities(): void {
@@ -84,7 +93,6 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
 
   private initSwiper() {
     if (!this.swiperContainerRef?.nativeElement) {
-      console.error("Swiper container não encontrado!");
       return;
     }
 
@@ -134,10 +142,7 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
 
     Object.assign(this.swiperContainerRef.nativeElement, swiperParams);
 
-    if (!this.swiperContainerRef.nativeElement.swiper) {
-      this.swiperContainerRef.nativeElement.initialize();
-    } else {
-      this.swiperContainerRef.nativeElement.swiper.update();
-    }
+
+    this.swiperInitialized = true;
   }
 }
