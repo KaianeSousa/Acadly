@@ -1,34 +1,58 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {EventAdminCard} from '../../../components/event-admin-card/event-admin-card';
 import {EventService} from '../../../core/service/event-service';
-import { Event } from '../../../core/types/Event';
+import {Event} from '../../../core/types/Event';
 import {Pagination} from '../../../core/types/Pagination';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, Observable, switchMap} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {EventModalForm} from '../../../components/event-modal-form/event-modal-form';
+import {AlertModalComponent} from '../../../components/alert-modal/alert-modal.component';
+import {ToastService} from '../../../core/service/toast-service';
 
 @Component({
   selector: 'app-event-management',
   imports: [
     EventAdminCard,
     AsyncPipe,
-    EventModalForm
+    EventModalForm,
+    AlertModalComponent
   ],
   templateUrl: './event-management.html',
   styleUrl: './event-management.scss'
 })
-export class EventManagement implements OnInit {
+export class EventManagement {
   private assetService = inject(EventService);
-  events$!: Observable<Pagination<Event>>;
+  private cdr = inject(ChangeDetectorRef);
+  private toastService = inject(ToastService);
+  pageSize = 8;
+
+  private page$ = new BehaviorSubject<number>(0);
+  private query$ = new BehaviorSubject<string>('');
+
+  events$: Observable<Pagination<Event>> = combineLatest([
+    this.page$,
+    this.query$.pipe(
+      debounceTime(300), distinctUntilChanged())
+  ]).pipe(
+    switchMap(([currentPage, currentQuery]) =>
+      this.assetService.getAllEvents(currentPage as number, this.pageSize, currentQuery as string)
+    )
+  );
+
   isModalVisible = false;
   selectedEvent: Event | null = null;
+  isAlertVisible = false;
+  private eventIdToDelete: number | null = null;
 
-  ngOnInit() {
-    this.loadEvents();
+  onSearchQueryChanged(query: string): void {
+    if (this.page$.value !== 0) {
+      this.page$.next(0);
+    }
+    this.query$.next(query);
   }
 
-  loadEvents() {
-    this.events$ = this.assetService.getAllEvents();
+  private refreshData(): void {
+    this.page$.next(this.page$.value);
   }
 
   onAddEvent(): void {
@@ -37,8 +61,6 @@ export class EventManagement implements OnInit {
   }
 
   onEventSelected(event: Event): void {
-    const e = this.assetService.editEvent(event.id!, event);
-    e.subscribe((event: Event) => {console.log(event);});
     this.selectedEvent = event;
     this.isModalVisible = true;
   }
@@ -48,9 +70,56 @@ export class EventManagement implements OnInit {
   }
 
   saveEvent(event: Event): void {
-    const e = this.assetService.saveEvent(event);
-    e.subscribe((event: Event) => {console.log(event);});
-    this.closeModal();
-    this.loadEvents();
+    this.assetService.saveEvent(event).subscribe({
+      next: () => {
+        const message = event.id ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!';
+        this.toastService.showSuccess(message);
+
+        this.refreshData();
+        this.closeModal();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.toastService.showError(err.error?.message || 'Falha ao salvar o evento. Tente novamente.')
+      }
+    });
+  }
+
+  deleteEvent(id: number): void {
+    this.eventIdToDelete = id;
+    this.isAlertVisible = true;
+  }
+
+  handleAlertClose(confirmed: boolean): void {
+    this.isAlertVisible = false;
+    if (confirmed && this.eventIdToDelete !== null) {
+      this.assetService.deleteEvent(this.eventIdToDelete).subscribe({
+        next: () => {
+          this.toastService.showSuccess('Evento excluído com sucesso.');
+          this.refreshData();
+          this.cdr.detectChanges();
+        },
+        error: (err) =>
+          this.toastService.showError(err.error?.message || 'Falha ao excluir o evento. Tente novamente.')
+
+      });
+    }
+    this.eventIdToDelete = null;
+  }
+
+  goToPage(page: number): void {
+    this.page$.next(page);
+  }
+
+  nextPage(currentPage: number, totalPages: number): void {
+    if (currentPage < totalPages - 1) {
+      this.goToPage(currentPage + 1);
+    }
+  }
+
+  previousPage(currentPage: number): void {
+    if (currentPage > 0) {
+      this.goToPage(currentPage - 1);
+    }
   }
 }

@@ -10,10 +10,13 @@
 
 .page-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  justify-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
+  gap: 1rem;
 
   h2 {
     font-size: 1.5rem;
@@ -119,4 +122,62 @@
   gap: 1.5rem;
 }
 
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1rem;
 
+  .pagination-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: #f0f0f0;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .pagination-info {
+    font-weight: 500;
+  }
+}
+
+.search-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+  }
+}

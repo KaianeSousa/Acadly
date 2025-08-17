@@ -5,6 +5,7 @@ import {AuthService} from '../../core/service/auth-service';
 import {Auth} from '../../core/types/User/auth';
 import {NgOptimizedImage} from '@angular/common';
 import {AuthForm} from '../../components/auth-form/auth-form';
+import {ToastService} from '../../core/service/toast-service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,8 @@ import {AuthForm} from '../../components/auth-form/auth-form';
 export class AdminLogin implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
+
   private router = inject(Router);
   auth: Auth = { email: '', password: '' };
 
@@ -39,12 +42,13 @@ export class AdminLogin implements OnInit {
 
     this.authService.login(credentials).subscribe({
       next: () => {
+        this.toastService.showSuccess('Login realizado com sucesso!');
         this.router.navigate(['/admin']);
       },
       error: (err) => {
-        this.errorMessage = 'E-mail ou senha inválidos. Tente novamente.';
+        this.toastService.showError('E-mail ou senha inválidos. Tente novamente.');
+
         this.isLoading = false;
-        console.error('Login failed', err);
       },
       complete: () => {
         this.isLoading = false;

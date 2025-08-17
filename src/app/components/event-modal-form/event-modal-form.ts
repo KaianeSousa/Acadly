@@ -20,6 +20,7 @@ export class EventModalForm implements OnInit {
   @Input() event: Event | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<Event>();
+  @Output() delete = new EventEmitter<number>();
 
   eventForm!: FormGroup;
   isEditMode = false;
@@ -32,7 +33,6 @@ export class EventModalForm implements OnInit {
     const [day, month, year] = dateStr.split('/');
     return `${year}-${month}-${day}`;
   }
-
 
   ngOnInit(): void {
     this.isEditMode = !!this.event;
