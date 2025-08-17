@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {BarcodeFormat} from '@zxing/library';
 import {EnrollmentService} from '../../core/service/enrollment-service';
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
-import {NgClass} from '@angular/common';
 import {finalize} from 'rxjs';
 import {ValidationResult} from '../../core/types/ValidationResult';
 import {QrCodeData} from '../../core/types/QRCodeData';
@@ -10,10 +9,8 @@ import {QrCodeData} from '../../core/types/QRCodeData';
 
 @Component({
   selector: 'app-check-in-scanner',
-  standalone: true,
   imports: [
     ZXingScannerModule,
-    NgClass,
   ],
   templateUrl: './check-in-scanner.html',
   styleUrl: './check-in-scanner.scss'
@@ -21,33 +18,35 @@ import {QrCodeData} from '../../core/types/QRCodeData';
 export class CheckInScanner {
   private assetService = inject(EnrollmentService);
   private cdr = inject(ChangeDetectorRef);
+
+  @Input() enable = false;
+  @Output() scanResult = new EventEmitter<ValidationResult>();
+  @Output() permissionChange = new EventEmitter<boolean>();
+
   allowedFormats = [BarcodeFormat.QR_CODE];
-  scannerEnabled = true;
   isProcessing = false;
   hasPermission: boolean | undefined;
-  validationResult: ValidationResult | null = null;
   scannedParticipantName: string | null = null;
 
   onPermissionResponse(permission: boolean) {
     this.hasPermission = permission;
+    this.permissionChange.emit(permission);
   }
 
   onScanSuccess(qrCodeString: string) {
-    if (this.isProcessing || !this.scannerEnabled) {
+    if (this.isProcessing || !this.enable) {
       return;
     }
 
     try {
       const qrData: QrCodeData = JSON.parse(qrCodeString);
-
       if (!qrData || !qrData.uniqueToken) {
         throw new Error("QR Code com formato inválido.");
       }
 
       this.isProcessing = true;
-      this.scannerEnabled = false;
       this.scannedParticipantName = qrData.participantName;
-      this.cdr.detectChanges();
+
       this.assetService.validateToken(qrData.uniqueToken)
         .pipe(
           finalize(() => {
@@ -62,30 +61,20 @@ export class CheckInScanner {
             if (apiResponse.status.includes('JÁ REGISTRADO') || apiResponse.status.includes('NÃO INICIADO') || apiResponse.status.includes('ENCERRADO')) {
               cssClass = 'warning';
             }
-            this.validationResult = {
+            this.scanResult.emit({
               message: apiResponse.message,
               participantName: apiResponse.participantName,
               eventName: apiResponse.eventName,
               cssClass: cssClass
-            };
-            this.cdr.detectChanges();
+            });
           },
           error: (err) => {
-            this.validationResult = {message: err.error?.message || 'QR Code inválido', cssClass: 'error'};
-            this.cdr.detectChanges();
+            this.scanResult.emit({ message: err.error?.message || 'QR Code inválido', cssClass: 'error' });
           }
         });
     } catch (e) {
       this.isProcessing = false;
-      this.scannerEnabled = false;
-      this.validationResult = {message: 'Formato do QR Code inválido.', cssClass: 'error'};
-      this.cdr.detectChanges();
+      this.scanResult.emit({ message: 'Formato do QR Code inválido.', cssClass: 'error' });
     }
-  }
-
-  resetScanner() {
-    this.validationResult = null;
-    this.scannerEnabled = true;
-    this.cdr.detectChanges();
   }
 }
