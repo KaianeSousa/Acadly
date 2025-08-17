@@ -7,7 +7,7 @@ import {NgOptimizedImage} from '@angular/common';
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [ModalComponent, NgOptimizedImage],
+  imports: [NgOptimizedImage],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.scss'
 })
@@ -23,8 +23,8 @@ export class HeroSectionComponent implements OnInit {
     }
   }
 
-  onModalClose() {
-  }
+ /* onModalClose() {
+  } */
 
   ngOnInit(): void {
     this.getEvent();
@@ -38,4 +38,3 @@ export class HeroSectionComponent implements OnInit {
     });
   }
 }
-

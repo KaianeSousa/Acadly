@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {CheckInScanner} from '../../components/check-in-scanner/check-in-scanner';
-import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-check-in',

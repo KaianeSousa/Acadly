@@ -1,9 +1,26 @@
-<div class="modal-overlay" (click)="onCancel()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
+<div class="modal-overlay" 
+  (click)="onCancel()"
+  (keydown.enter)="onCancel()"
+  (keydown.space)="onCancel()"
+  tabindex="0"
+  role="button"
+  >
+  <div class="modal-content" 
+  (click)="$event.stopPropagation()"
+  (keydown.enter)="$event.stopPropagation()"
+  (keydown.space)="$event.stopPropagation()"
+  tabindex="0"
+  role="button">
 
     <header class="modal-header">
       <h2>{{ title }}</h2>
-      <button class="close-button" (click)="onCancel()" aria-label="Fechar modal">&times;</button>
+      <button class="close-button" 
+      (click)="onCancel()"
+      (keydown.enter)="onCancel()"
+      (keydown.space)="onCancel()"
+      tabindex="0"
+      role="button"
+      aria-label="Fechar modal">&times;</button>
     </header>
 
     <section class="modal-body">
@@ -12,11 +29,23 @@
 
     <footer class="modal-footer">
       @if (showCancelButton) {
-        <button type="button" class="button-secondary" (click)="onCancel()">
+        <button type="button" class="button-secondary" 
+        (click)="onCancel()"
+        (keydown.enter)="onCancel()"
+        (keydown.space)="onCancel()"
+        tabindex="0"
+        role="button"
+        >
           {{ cancelText }}
         </button>
       }
-      <button type="button" class="button-primary" (click)="onConfirm()">
+      <button type="button" class="button-primary"
+      (click)="onConfirm()"
+      (keydown.enter)="onConfirm()"
+      (keydown.space)="onConfirm()"
+      tabindex="0"
+      role="button"
+      >
         {{ confirmText }}
       </button>
     </footer>

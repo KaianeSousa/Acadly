@@ -8,8 +8,6 @@ import {Toast} from '../types/Toast';
 export class ToastService {
   private toasts$ = new BehaviorSubject<Toast[]>([]);
 
-  constructor() { }
-
   getToasts(): Observable<Toast[]> {
     return this.toasts$.asObservable();
   }

@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrl: './burger-button.scss'
 })
 export class BurgerButton {
-  @Input() isOpen: boolean = false;
+  @Input() isOpen = false;
   @Output() toggled = new EventEmitter<void>();
 
   onClick(): void {

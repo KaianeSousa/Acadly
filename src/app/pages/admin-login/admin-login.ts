@@ -45,7 +45,7 @@ export class AdminLogin implements OnInit {
         this.toastService.showSuccess('Login realizado com sucesso!');
         this.router.navigate(['/admin']);
       },
-      error: (err) => {
+      error: () => {
         this.toastService.showError('E-mail ou senha inválidos. Tente novamente.');
 
         this.isLoading = false;

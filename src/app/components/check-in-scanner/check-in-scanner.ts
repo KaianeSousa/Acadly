@@ -75,7 +75,7 @@ export class CheckInScanner {
             this.cdr.detectChanges();
           }
         });
-    } catch (e) {
+    } catch {
       this.isProcessing = false;
       this.scannerEnabled = false;
       this.validationResult = {message: 'Formato do QR Code inválido.', cssClass: 'error'};

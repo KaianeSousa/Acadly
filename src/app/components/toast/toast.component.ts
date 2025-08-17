@@ -23,7 +23,7 @@ import {NgClass} from '@angular/common';
 })
 export class ToastComponent implements OnInit{
   @Input() toast!: Toast;
-  @Output() close = new EventEmitter<number>();
+  @Output() toastClose = new EventEmitter<number>();
 
   ngOnInit(): void {
     if (this.toast.duration) {
@@ -32,10 +32,10 @@ export class ToastComponent implements OnInit{
   }
 
   onClose(): void {
-    this.close.emit(this.toast.id);
+    this.toastClose.emit(this.toast.id);
   }
 
-  get toastClasses(): { [key: string]: boolean } {
+  get toastClasses(): Record<string, boolean> {
     return {
       'toast': true,
       [`toast--${this.toast.type}`]: true

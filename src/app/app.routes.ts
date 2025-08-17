@@ -6,6 +6,7 @@ import {AdminLogin} from './pages/admin-login/admin-login';
 import { EmployeeLogin } from './pages/employee-login/employee-login';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'app-home', pathMatch: 'full' },
   {
     path: 'app-home',
     loadComponent: () =>
@@ -18,6 +19,4 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.routes').then(m => m.ADMIN_ROUTES)
   },
-  { path: '**', redirectTo: 'app-home', pathMatch: 'full'},
-
 ]

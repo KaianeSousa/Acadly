@@ -7,18 +7,18 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrl: './alert-modal.component.scss'
 })
 export class AlertModalComponent {
-  @Input() title: string = 'Atenção';
-  @Input() message: string = 'Você tem certeza que deseja continuar?';
-  @Input() confirmText: string = 'Confirmar';
-  @Input() cancelText: string = 'Cancelar';
-  @Input() showCancelButton: boolean = true;
-  @Output() close = new EventEmitter<boolean>();
+  @Input() title = 'Atenção';
+  @Input() message = 'Você tem certeza que deseja continuar?';
+  @Input() confirmText = 'Confirmar';
+  @Input() cancelText = 'Cancelar';
+  @Input() showCancelButton = true;
+  @Output() modalClose = new EventEmitter<boolean>();
 
   onConfirm(): void {
-    this.close.emit(true);
+    this.modalClose.emit(true);
   }
 
   onCancel(): void {
-    this.close.emit(false);
+    this.modalClose.emit(false);
   }
 }

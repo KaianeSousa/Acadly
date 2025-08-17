@@ -7,7 +7,6 @@ import {
   AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
-  Inject,
   PLATFORM_ID
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
@@ -35,7 +34,7 @@ register();
   styleUrls: ['./list-cards.component.scss']
 })
 export class ListCardsComponent implements OnInit, AfterViewInit {
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  private readonly platformId = inject(PLATFORM_ID);
   private assetService = inject(ActivityService);
   activities: Pagination<Activity> = {
     data: [],

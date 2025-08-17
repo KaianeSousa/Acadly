@@ -1,7 +1,6 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import {Auth} from '../../core/types/User/auth';
+import { Component, Input, Output, OnInit, EventEmitter, inject } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { EmployeeRequest } from '../../core/types/Employee/request';
+import { Employee } from '../../core/types/Employee';
 
 @Component({
   selector: 'app-employee-modal-form',
@@ -10,24 +9,28 @@ import { EmployeeRequest } from '../../core/types/Employee/request';
   styleUrl: './employee-modal-form.component.scss'
 })
 export class EmployeeModalFormComponent implements OnInit {
-  @Input() isLoading: boolean = false;
-  @Output() close = new EventEmitter<void>();
-   @Output() save = new EventEmitter<EmployeeRequest>();
-  @Input() employee : EmployeeRequest | null = null;
+  @Input() isLoading = false;
+  @Output() modalClose = new EventEmitter<void>();
+  @Output() save = new EventEmitter<Employee>();
+  @Input() employee : Employee | null = null;
 
-  employeeForm!: FormGroup;
   isEditMode = false;
+  employeeForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  private fb = inject(FormBuilder);
 
   ngOnInit(): void {
     this.isEditMode = !!this.employee;
 
     this.employeeForm = this.fb.group({
+      id: [this.employee?.id || null],
       name: [this.employee?.name || '', Validators.required],
       email: [this.employee?.email || '', Validators.required],
-      password: [this.employee?.password ?? true, Validators.required]
-    });
+      password: [
+        '', 
+        this.isEditMode ? [] : [Validators.required] 
+      ]
+        });
   }
 
   onSave(): void {
@@ -39,6 +42,6 @@ export class EmployeeModalFormComponent implements OnInit {
   }
 
   onClose(): void {
-    this.close.emit();
+    this.modalClose.emit();
   }
 }

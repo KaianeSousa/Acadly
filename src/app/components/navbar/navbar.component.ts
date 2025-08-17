@@ -77,12 +77,6 @@ export class NavbarComponent implements OnInit {
     this.isAdminDropdownOpen = false;
   }
 
-  logout() {
-    this.authService.logout();
-    this.openDropdown = false;
-    window.location.reload();
-  }
-
   isLoggedIn(): boolean {
     return this.authService.isLogged();
   }

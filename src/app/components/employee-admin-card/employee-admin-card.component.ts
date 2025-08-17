@@ -10,12 +10,13 @@ import { Employee } from '../../core/types/Employee';
 export class EmployeeAdminCardComponent {
   @Input({ required: true }) employee!: Employee;
   @Output() cardClick = new EventEmitter<Employee>();
+  @Output() deleteClick = new EventEmitter<number>();
 
   onCardClick(): void {
     this.cardClick.emit(this.employee);
   }
-
-  onDelete(): void {
-     null;
+  onDeleteClick(event: MouseEvent): void {
+    event.stopPropagation();
+    this.deleteClick.emit(this.employee.id!);
   }
 }

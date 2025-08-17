@@ -1,5 +1,5 @@
 <div class="toast-container">
   @for(toast of (toasts$ | async); track toast.id) {
-    <app-toast [toast]="toast" (close)="onCloseToast($event)"></app-toast>
+    <app-toast [toast]="toast" (toastClose)="onCloseToast($event)"></app-toast>
   }
 </div>

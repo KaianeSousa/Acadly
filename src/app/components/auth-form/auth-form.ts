@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {Auth} from '../../core/types/User/auth';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
@@ -11,14 +11,14 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
   styleUrl: './auth-form.scss'
 })
 export class AuthForm implements OnInit {
-  @Input() isLoading: boolean = false;
+  @Input() isLoading = false;
   @Input() errorMessage: string | null = null;
-  @Input() submitLabel: string = 'Entrar';
+  @Input() submitLabel = 'Entrar';
   @Output() formSubmit = new EventEmitter<Auth>();
 
   authForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  private fb = inject(FormBuilder);
 
   ngOnInit(): void {
     this.authForm = this.fb.group({

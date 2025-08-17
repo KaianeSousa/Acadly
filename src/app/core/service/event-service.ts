@@ -20,7 +20,7 @@ export class EventService {
     return this.http.get<Event>(`${this.apiUrl}/get-event-active`);
   }
 
-  getAllEvents(page: number = 0, pageSize: number = 10, query: string = ''): Observable<Pagination<Event>> {
+  getAllEvents(page = 0, pageSize = 10, query = ''): Observable<Pagination<Event>> {
     return this.http.get<Pagination<Event>>(`${this.apiUrl}/get-all-events?query=${query}&page=${page}&pageSize=${pageSize}`);
   }
 

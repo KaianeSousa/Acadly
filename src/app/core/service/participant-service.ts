@@ -14,7 +14,6 @@ export class ParticipantService {
     private readonly apiUrl = `${environment.apiUrl}/participant`;
     private http = inject(HttpClient);
 
-
     createParticipant(eventId: number, participant: Participant): Observable<ParticipantResponseDTO> {
         return this.http.post<ParticipantResponseDTO>(`${this.apiUrl}/create-participation/${eventId}`, participant);
     }

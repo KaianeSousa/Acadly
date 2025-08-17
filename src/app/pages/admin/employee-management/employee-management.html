@@ -1,4 +1,4 @@
-<<div class="management-page">
+<div class="management-page">
   <div class="page-header">
     <h2>Gerenciamento de Funcionários</h2>
     <button (click)="onAddEmployee()" class="add-button">
@@ -7,16 +7,49 @@
     </button>
   </div>
 
+  <div class="search-container">
+    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input
+      #searchInput
+      type="text"
+      class="search-input"
+      placeholder="Pesquisar por nome do funcionário..."
+      (input)="onSearchQueryChanged(searchInput.value)"
+    />
+  </div>
+
   @if (employees$ | async; as employeesResult) {
     @if (employeesResult.data.length > 0) {
-      <div class="events-grid">
+      <div class="employees-grid">
         @for (employee of employeesResult.data; track employee.id) {
           <app-employee-admin-card
             [employee]="employee"
             (cardClick)="onEmployeeSelected($event)"
+            (deleteClick)="deleteEmployee($event)"
           ></app-employee-admin-card>
         }
       </div>
+      @if (employeesResult.pagination.totalPages > 1) {
+        <div class="pagination-controls">
+          <button
+            class="pagination-button"
+            (click)="previousPage(employeesResult.pagination.page)"
+            [disabled]="employeesResult.pagination.page === 0">
+            Anterior
+          </button>
+
+          <span class="pagination-info">
+            Página {{ employeesResult.pagination.page + 1 }} de {{ employeesResult.pagination.totalPages }}
+          </span>
+
+          <button
+            class="pagination-button"
+            (click)="nextPage(employeesResult.pagination.page, employeesResult.pagination.totalPages)"
+            [disabled]="employeesResult.pagination.page === employeesResult.pagination.totalPages - 1">
+            Próxima
+          </button>
+        </div>
+      }
     } @else {
       <div class="empty-state">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
@@ -26,14 +59,14 @@
           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
           <line x1="12" y1="22.08" x2="12" y2="12"></line>
         </svg>
-        <h3>Nenhum funcionário cadastrado</h3>
-        <p>Parece que não há nada aqui. Que tal cadastrar alguém para o check in?</p>
+        <h3>Nenhum funcionário encontrado</h3>
+        <p>Parece que não há nada aqui. Que tal cadastrar alguém?</p>
       </div>
     }
   } @else {
     <div class="loading-container">
       <div class="spinner"></div>
-      <p>Buscando os funcionários...</p>
+      <p>Carregando funcionários...</p>
     </div>
   }
 
@@ -47,3 +80,11 @@
   ></app-employee-modal-form>
 }
 
+@if (isAlertVisible) {
+  <app-alert-modal
+    title="Confirmar Exclusão"
+    message="Tem certeza que deseja excluir este funcionário? Esta ação não pode ser desfeita."
+    confirmText="Sim, Excluir"
+    (modalClose)="handleAlertClose($event)">
+  </app-alert-modal>
+}

@@ -6,7 +6,7 @@
     background-color: var(--primary-color, var(--secondary-color));
     border-radius: 12px;
     border: 2px solid var(--secondary-color);
-    padding: 1.5rem;
+    padding: 1.1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -37,28 +37,29 @@
     flex-direction: row;
     justify-content: space-between;
   
-    .card-title {
+    &__card-title {
         margin-bottom: 1.2rem;
         font-size: 1.3rem;
         font-weight: 700;
         color: var(--secondary-color, var(--resources-color));
     }
 
-    .delete-button {
-        background: none;
-        border: none;
-        padding: 0.1rem;
-        cursor: pointer;
-        color: var(--resources-color);
-        transition: color 0.2s;
-        
-        &:hover {
-            color: var(--secondary-color);
-        }
-        
-        svg {
-        vertical-align: middle;
-        }
+    &__delete-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      padding: 1px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      color: #a0aec0;
+    
+      &:hover {
+        background-color: #fff5f5; 
+        color: #e53e3e;
+      }
     }
   }
   
@@ -99,4 +100,3 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  

@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output
@@ -18,15 +19,14 @@ import {Event} from '../../core/types/Event';
 })
 export class EventModalForm implements OnInit {
   @Input() event: Event | null = null;
-  @Output() close = new EventEmitter<void>();
+  @Output() modalClose = new EventEmitter<void>();
   @Output() save = new EventEmitter<Event>();
   @Output() delete = new EventEmitter<number>();
 
   eventForm!: FormGroup;
   isEditMode = false;
 
-  constructor(private fb: FormBuilder) {
-  }
+  private fb = inject(FormBuilder);
 
   private formatDateForInput(dateStr: string | undefined): string {
     if (!dateStr) return '';
@@ -57,6 +57,6 @@ export class EventModalForm implements OnInit {
   }
 
   onClose(): void {
-    this.close.emit();
+    this.modalClose.emit();
   }
 }

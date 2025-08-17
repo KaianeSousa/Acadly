@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Classification } from '../../core/types/Classification';
 import { Participant } from '../../core/types/Participant';
 import { ClassificationService } from '../../core/service/classification-service';
 import { ParticipantService } from '../../core/service/participant-service';
@@ -104,7 +103,7 @@ export class ModalComponent implements OnInit {
   }
 
 
-  selectOption(value: string, event: MouseEvent) {
+  selectOption(value: string, event: Event) {
     event.stopPropagation();
     const control = this.participantForm.get('tipoIngresso');
     control?.setValue(value);

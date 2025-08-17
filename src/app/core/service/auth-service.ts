@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import {Inject, inject, Injectable, PLATFORM_ID} from "@angular/core";
+import { inject, Injectable, PLATFORM_ID} from "@angular/core";
 import {User} from "../types/User";
 import {Auth} from "../types/User/auth";
 import {tap} from 'rxjs/operators';
@@ -7,6 +7,7 @@ import {AuthResponse} from "../types/User/auth-response";
 import {environment} from '../../../environment/enviroment';
 import {jwtDecode} from 'jwt-decode';
 import {isPlatformBrowser} from '@angular/common';
+import { DecodedToken } from "../types/Token";
 
 @Injectable({
   providedIn: 'root',
@@ -17,15 +18,16 @@ export class AuthService {
   private http = inject(HttpClient);
   private user: User | null = null;
   private readonly isBrowser: boolean;
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-    if (this.isBrowser) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.decodeAndSetUser(token);
+  private readonly platformId = inject(PLATFORM_ID);
+  
+  constructor() {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      if (this.isBrowser) {
+          const token = localStorage.getItem('token');
+          if (token) {
+              this.decodeAndSetUser(token);
+          }
       }
-    }
   }
 
   login(credentials: Auth) {
@@ -43,14 +45,13 @@ export class AuthService {
 
   private decodeAndSetUser(token: string): void {
     try {
-      const decodedToken: any = jwtDecode(token);
+      const decodedToken: DecodedToken = jwtDecode(token);
       this.user = {
         name: decodedToken.name,
-        email: decodedToken.sub,
-        role: decodedToken.role.toUpperCase()
+        email: decodedToken.email,
+        role: decodedToken.role
       };
-    } catch (error) {
-      console.error("Failed to decode token", error);
+    } catch {
       this.logout();
     }
   }

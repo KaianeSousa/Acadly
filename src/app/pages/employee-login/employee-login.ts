@@ -4,7 +4,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { Auth } from '../../core/types/User/auth';
-import { AuthService } from '../../core/service/auth-service';
+import { AuthEmployeeService } from '../../core/service/auth-employee-service';
 import { AuthForm } from '../../components/auth-form/auth-form';
 
 @Component({
@@ -17,9 +17,10 @@ import { AuthForm } from '../../components/auth-form/auth-form';
   templateUrl: './employee-login.html',
   styleUrl: './employee-login.scss'
 })
+
 export class EmployeeLogin implements OnInit {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  private authEmployeeService = inject(AuthEmployeeService);
   private router = inject(Router);
   auth: Auth = { email: '', password: '' };
 
@@ -38,9 +39,9 @@ export class EmployeeLogin implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.authService.login(credentials).subscribe({
+    this.authEmployeeService.authEmployee(credentials).subscribe({
       next: () => {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/employee']);
       },
       error: (err) => {
         this.errorMessage = 'E-mail ou senha inválidos. Tente novamente.';
