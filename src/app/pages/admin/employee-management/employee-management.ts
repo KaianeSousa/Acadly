@@ -34,7 +34,7 @@ export class EmployeeManagement {
     this.query$.pipe(debounceTime(300), distinctUntilChanged())
   ]).pipe(
     switchMap(([currentPage, currentQuery]) =>
-      this.employeeService.getAllEmployees(currentPage, this.pageSize, currentQuery)
+      this.employeeService.getAllEmployees(currentPage as number, this.pageSize, currentQuery as string)
     )
   );
 
