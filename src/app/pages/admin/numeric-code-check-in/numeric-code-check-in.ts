@@ -1,10 +1,9 @@
-import {ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {ValidationResult} from '../../../core/types/ValidationResult';
 import {EnrollmentService} from '../../../core/service/enrollment-service';
 import {finalize, switchMap, throwError} from 'rxjs';
-import {FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {EventService} from '../../../core/service/event-service';
-import {ToastService} from '../../../core/service/toast-service';
 import {NgClass} from '@angular/common';
 
 @Component({

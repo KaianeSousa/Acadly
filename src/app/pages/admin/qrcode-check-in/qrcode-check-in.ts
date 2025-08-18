@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, inject} from '@angular/core';
-import {JsonPipe, NgClass} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {CheckInScanner} from '../../../components/check-in-scanner/check-in-scanner';
 import {ValidationResult} from '../../../core/types/ValidationResult';
 
