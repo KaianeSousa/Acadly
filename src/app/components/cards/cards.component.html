@@ -1,14 +1,14 @@
-<div class="card">
+<div class="card" aria-label="Cartão de atividade">
   <div class="card__content">
-    <h2 class="card__content__title">
+    <h2 class="card__content__title" aria-label="Nome da atividade">
       {{ activity.name }}
     </h2>
-    <h3 class="dateTime">Data: <p>{{ activity.dateTime }}</p></h3>
-    <h3 class="duration">
+    <h3 class="dateTime" aria-label="Data da atividade">Data: <p aria-label="Data">{{ activity.dateTime }}</p></h3>
+    <h3 class="duration" aria-label="Duração prevista da atividade">
       Previsão de duração:
-      <p>{{ activity.duration }} horas</p>
+      <p aria-label="Duração em horas">{{ activity.duration }} horas</p>
     </h3>
-    <h4 class="description">
+    <h4 class="description"  aria-label="Descrição da atividade">
       {{ activity.description }}
     </h4>
   </div>

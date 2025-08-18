@@ -48,7 +48,7 @@ export class NavbarComponent  {
 
 
   goToAboutUspage() {
-    return this.router.navigate(['/app-about-us'])
+    return this.router.navigate(['/about-us'])
   }
 
   goToCheckIn() {
