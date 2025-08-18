@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.user = this.authService.getUser();
+    this.user = this.authService.currentUser();
   }
 
   get isUserAdminOrEmployee(): boolean {
