@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import { inject, Injectable, PLATFORM_ID} from "@angular/core";
+import {computed, inject, Injectable, PLATFORM_ID, signal} from "@angular/core";
 import {User} from "../types/User";
 import {Auth} from "../types/User/auth";
 import {tap} from 'rxjs/operators';
@@ -14,12 +14,16 @@ import { DecodedToken } from "../types/Token";
 })
 
 export class AuthService {
-  private readonly apiUrl = `${environment.apiUrl}/auth/login`;
+  private readonly adminApiUrl = `${environment.apiUrl}/auth/login`;
+  private readonly employeeApiUrl = `${environment.apiUrl}/employee/auth`;
   private http = inject(HttpClient);
-  private user: User | null = null;
   private readonly isBrowser: boolean;
   private readonly platformId = inject(PLATFORM_ID);
-  
+  currentUser = signal<User | null>(null);
+
+  isLogged = computed(() => !!this.currentUser());
+  userRole = computed(() => this.currentUser()?.role ?? null);
+
   constructor() {
       this.isBrowser = isPlatformBrowser(this.platformId);
       if (this.isBrowser) {
@@ -30,52 +34,42 @@ export class AuthService {
       }
   }
 
-  login(credentials: Auth) {
-    return this.http.post<AuthResponse>(this.apiUrl, credentials)
-      .pipe(
-        tap((response: AuthResponse) => {
-          if (this.isBrowser) {
-            localStorage.setItem('token', response.token);
-            sessionStorage.setItem('token', response.token);
-          }
-          this.decodeAndSetUser(response.token);
-        })
-      );
+  loginAdmin(credentials: Auth) {
+    return this.http.post<AuthResponse>(this.adminApiUrl, credentials).pipe(
+      tap(response => this.handleAuthSuccess(response.token))
+    );
+  }
+
+  loginEmployee(credentials: Auth) {
+    return this.http.post<AuthResponse>(this.employeeApiUrl, credentials).pipe(
+      tap(response => this.handleAuthSuccess(response.token))
+    );
+  }
+
+  private handleAuthSuccess(token: string): void {
+    if (this.isBrowser) {
+      localStorage.setItem('token', token);
+    }
+    this.decodeAndSetUser(token);
   }
 
   private decodeAndSetUser(token: string): void {
     try {
       const decodedToken: DecodedToken = jwtDecode(token);
-      this.user = {
+      console.log('✅ Token Decodificado:', decodedToken);
+
+      this.currentUser.set({
         name: decodedToken.name,
         email: decodedToken.email,
         role: decodedToken.role
-      };
+      });
     } catch {
       this.logout();
     }
   }
 
-  getUser(): User | null {
-    return this.user;
-  }
-
-  getUserRole(): string | null {
-    if (this.user && this.user.role) {
-      return this.user.role;
-    }
-    return null;
-  }
-
-  isLogged(): boolean {
-    if (this.isBrowser) {
-      return !!localStorage.getItem('token');
-    }
-    return false;
-  }
-
   logout(): void {
-    this.user = null;
+    this.currentUser.set(null);
     if (this.isBrowser) {
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
