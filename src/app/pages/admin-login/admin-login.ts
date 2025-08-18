@@ -40,7 +40,7 @@ export class AdminLogin implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.authService.login(credentials).subscribe({
+    this.authService.loginAdmin(credentials).subscribe({
       next: () => {
         this.toastService.showSuccess('Login realizado com sucesso!');
         this.router.navigate(['/admin']);
