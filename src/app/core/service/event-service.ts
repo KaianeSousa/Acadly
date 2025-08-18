@@ -58,6 +58,10 @@ export class EventService {
     );
   }
 
+  getEventById(id: number): Observable<Event> {
+    return this.http.get<Event>(`${this.apiUrl}/get-event/${id}`);
+  }
+
   isEventActive(): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/exists-active`);
   }

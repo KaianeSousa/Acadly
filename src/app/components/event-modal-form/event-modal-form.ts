@@ -19,9 +19,8 @@ import {Event} from '../../core/types/Event';
 })
 export class EventModalForm implements OnInit {
   @Input() event: Event | null = null;
-  @Output() modalClose = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<void>();
   @Output() save = new EventEmitter<Event>();
-  @Output() delete = new EventEmitter<number>();
 
   eventForm!: FormGroup;
   isEditMode = false;
@@ -57,6 +56,6 @@ export class EventModalForm implements OnInit {
   }
 
   onClose(): void {
-    this.modalClose.emit();
+    this.closeModal.emit();
   }
 }

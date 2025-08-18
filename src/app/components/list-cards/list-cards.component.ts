@@ -4,7 +4,6 @@ import {
   inject,
   HostListener,
   ViewChild,
-  AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   PLATFORM_ID
@@ -17,6 +16,7 @@ import { Activity } from '../../core/types/Activity';
 import { ActivityService } from '../../core/service/activity-service';
 import { CardsComponent } from '../cards/cards.component';
 import {Pagination} from '../../core/types/Pagination';
+import {ActivityModal} from '../activity-modal/activity-modal';
 
 register();
 
@@ -27,13 +27,14 @@ register();
     CommonModule,
     FormsModule,
     NgSelectModule,
-    CardsComponent
+    CardsComponent,
+    ActivityModal
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './list-cards.component.html',
   styleUrls: ['./list-cards.component.scss']
 })
-export class ListCardsComponent implements OnInit, AfterViewInit {
+export class ListCardsComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private assetService = inject(ActivityService);
   activities: Pagination<Activity> = {
@@ -46,10 +47,13 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
     },
   };
   isMobile = false;
-  private viewInitialized = false;
-  private swiperInitialized = false;
 
   @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
+
+
+  // Estado do modal agora vive aqui
+  isModalVisible = false;
+  selectedActivity: Activity | null = null;
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -58,17 +62,9 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
     this.getAllActivities();
   }
 
-  ngAfterViewInit(): void {
-    this.viewInitialized = true;
-    this.initSwiperIfNeeded();
-  }
-
   @HostListener('window:resize')
   onResize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreen();
-    }
-    this.initSwiperIfNeeded();
+    this.checkScreen();
   }
 
   checkScreen() {
@@ -78,70 +74,18 @@ export class ListCardsComponent implements OnInit, AfterViewInit {
   }
 
   getAllActivities(): void {
-      this.assetService.getAllActivities().subscribe(data => {
-        this.activities = data;
-        this.initSwiperIfNeeded();
-      });
+    this.assetService.getAllActivities().subscribe(data => {
+      this.activities = data;
+    });
   }
 
-  private initSwiperIfNeeded() {
-    if (this.activities.data.length > 0 && this.viewInitialized) {
-      this.initSwiper();
-    }
+  // Métodos do modal agora vivem aqui
+  showDetails(activity: Activity): void {
+    this.selectedActivity = activity;
+    this.isModalVisible = true;
   }
 
-  private initSwiper() {
-    if (!this.swiperContainerRef?.nativeElement) {
-      return;
-    }
-
-    if (this.swiperInitialized) {
-      this.swiperContainerRef.nativeElement.swiper?.update();
-      return;
-    }
-    const swiperParams = this.isMobile
-      ? {
-          slidesPerView: 1,
-          spaceBetween: 16,
-          centeredSlides: true,
-          pagination: {
-            clickable: true,
-            type: 'bullets',
-          },
-          navigation: false,
-          breakpoints: {
-            640: {
-              slidesPerView: 1.2,
-            },
-            768: {
-              slidesPerView: 1.5,
-            },
-          },
-        }
-      : {
-          slidesPerView: 3,
-          spaceBetween: 20,
-          centeredSlides: false,
-          pagination: false,
-          navigation: {
-            nextEl: '.carousel__nav-next',
-            prevEl: '.carousel__nav-prev',
-          },
-          breakpoints: {
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-            1200: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-          },
-        };
-
-    Object.assign(this.swiperContainerRef.nativeElement, swiperParams);
-
-
-    this.swiperInitialized = true;
+  hideDetails(): void {
+    this.isModalVisible = false;
   }
 }

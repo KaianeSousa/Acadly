@@ -79,51 +79,6 @@
         }
       </div>
     }
-
-   <!-- @if (isLoggedIn()) {
-      <div
-        class="navbar__user-menu"
-        (click)="toggleUserDropdown()"
-        (keydown.enter)="toggleUserDropdown()"
-        (keydown.space)="toggleUserDropdown()"
-        tabindex="0"
-        role="button"
-      >
-        <div class="navbar__user-avatar">
-          {{ user?.name?.charAt(0) | uppercase }}
-        </div>
-
-
-       <!-- @if (openDropdown) {
-          <div class="navbar__dropdown" (click)="$event.stopPropagation()">
-            <ul role="menu">
-              <li>
-                <a
-                  class="navbar__profile"
-                  role="menuitem"
-                  (click)="goToProfile()"
-                  (keydown)="handleKeydown($event, goToProfile)"
-                  aria-label="Go to user profile"
-                >
-                  Meu perfil
-                </a>
-              </li>
-             <!-- <li>
-                <button
-                  class="navbar__logout"
-                  role="menuitem"
-                  (click)="logout()"
-                  (keydown)="handleKeydown($event, logout)"
-                  aria-label="Log out of the application"
-                >
-                  Sair
-                </button> 
-              </li> 
-            </ul> 
-          </div>
-        }
-      </div>
-    } -->
   </div>
 
   <app-burger-button

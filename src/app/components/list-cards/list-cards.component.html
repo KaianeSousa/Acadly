@@ -1,22 +1,31 @@
 <div class="list">
-  <div class="list__text">
-    <h3>Confira nossa programação</h3>
-  </div>
-  <div class="list__sort">
-    <ng-select (open)="getAllActivities()"></ng-select>
-  </div>
-
   <div class="carousel__container">
     @if (!isMobile) {
       <div class="carousel__nav-prev"></div>
       <div class="carousel__nav-next"></div>
     }
-    <swiper-container #swiperContainer>
+
+    <swiper-container
+      [attr.slides-per-view]="isMobile ? 1 : 3"
+      [attr.space-between]="isMobile ? 16 : 20"
+      [attr.centered-slides]="isMobile"
+      [attr.pagination]="isMobile ? 'true' : 'false'"
+      [attr.navigation]="isMobile ? 'false' : '{ &quot;nextEl&quot;: &quot;.carousel__nav-next&quot;, &quot;prevEl&quot;: &quot;.carousel__nav-prev&quot; }'"
+      [attr.breakpoints]="isMobile ? '{ &quot;640&quot;: { &quot;slidesPerView&quot;: 1.2 }, &quot;768&quot;: { &quot;slidesPerView&quot;: 1.5 } }' : null"
+    >
       @for (activity of activities.data; track activity.id) {
         <swiper-slide>
-          <app-cards [activity]="activity"></app-cards>
+          <app-cards [activity]="activity" (click)="showDetails(activity)"></app-cards>
         </swiper-slide>
       }
     </swiper-container>
   </div>
 </div>
+
+
+<app-activity-modal
+  [isVisible]="isModalVisible"
+  [title]="selectedActivity?.name || ''"
+  [content]="selectedActivity?.description || ''"
+  (closeModal)="hideDetails()">
+</app-activity-modal>
