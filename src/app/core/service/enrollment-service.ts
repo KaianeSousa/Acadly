@@ -15,4 +15,13 @@ export class EnrollmentService {
     const requestBody = { token: token };
     return this.http.post<ValidationResponse>(`${this.apiUrl}/validate/token`, requestBody);
   }
+
+  validateNumericCode(eventId: number, numericCode: string): Observable<ValidationResponse> {
+    const requestBody = {
+      eventId: eventId,
+      numericCode: numericCode
+    };
+
+    return this.http.post<ValidationResponse>(`${this.apiUrl}/validate/code`, requestBody);
+  }
 }
