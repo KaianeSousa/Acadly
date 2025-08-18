@@ -4,8 +4,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { Auth } from '../../core/types/User/auth';
-import { AuthEmployeeService } from '../../core/service/auth-employee-service';
 import { AuthForm } from '../../components/auth-form/auth-form';
+import {AuthService} from '../../core/service/auth-service';
 
 @Component({
   selector: 'app-employee-login',
@@ -20,7 +20,7 @@ import { AuthForm } from '../../components/auth-form/auth-form';
 
 export class EmployeeLogin implements OnInit {
   private fb = inject(FormBuilder);
-  private authEmployeeService = inject(AuthEmployeeService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   auth: Auth = { email: '', password: '' };
 
@@ -39,7 +39,7 @@ export class EmployeeLogin implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.authEmployeeService.authEmployee(credentials).subscribe({
+    this.authService.loginEmployee(credentials).subscribe({
       next: () => {
         this.router.navigate(['/employee']);
       },
