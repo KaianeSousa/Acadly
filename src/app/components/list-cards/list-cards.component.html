@@ -13,12 +13,6 @@
           <app-cards [activity]="activity" (click)="showDetails(activity)"></app-cards>
         </swiper-slide>
       }
-
-      @for (activity of activities.data; track activity.id) {
-        <swiper-slide (click)="showDetails(activity)">
-          <app-cards [activity]="activity"></app-cards>
-        </swiper-slide>
-      }
     </swiper-container>
 
       <button class="carousel__nav-prev">

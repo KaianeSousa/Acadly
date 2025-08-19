@@ -1,12 +1,12 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {EventService} from '../../../../core/service/event-service';
+import {EventService} from '../../../core/service/event-service';
 import {AsyncPipe} from '@angular/common';
-import {Event} from '../../../../core/types/Event';
-import {EventModalForm} from '../../../../components/event-modal-form/event-modal-form';
-import {ToastService} from '../../../../core/service/toast-service';
-import {ActivityManagement} from '../../../../components/activity-management/activity-management';
+import {Event} from '../../../core/types/Event';
+import {EventModalForm} from '../../../components/event-modal-form/event-modal-form';
+import {ToastService} from '../../../core/service/toast-service';
+import {ActivityManagement} from '../../../components/activity-management/activity-management';
 
 @Component({
   selector: 'app-event-detail',
