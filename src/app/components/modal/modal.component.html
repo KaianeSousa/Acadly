@@ -1,6 +1,6 @@
 @if (isModalOpen) {
   <div class="modal">
-    <div class="modal__backdrop" 
+    <div class="modal__backdrop"
       (click)="close()"
       (keydown.enter)="close()"
       (keydown.space)="close()"
@@ -11,8 +11,8 @@
     <div class="modal__content">
       <div class="modal__header">
         <h2>Cadastro de Participante</h2>
-        <button 
-          class="modal__close" 
+        <button
+          class="modal__close"
           (click)="close()"
           (keydown.enter)="close()"
           (keydown.space)="close()"
@@ -90,9 +90,9 @@
                     (click)="selectOption(type, $event)"
                     (keydown.enter)="selectOption(type, $event)"
                     (keydown.space)="selectOption(type, $event)"
-                    tabindex="0"  
-                    role="option"  
-                    [attr.aria-selected]="participantForm.get('tipoIngresso')?.value === type"  
+                    tabindex="0"
+                    role="option"
+                    [attr.aria-selected]="participantForm.get('tipoIngresso')?.value === type"
                   >
                     {{ type }}
                   </li>
@@ -113,15 +113,25 @@
         </div>
 
         <div class="form-actions">
-          <button type="submit">Cadastrar</button>
-          <button 
-            type="button" 
-            (click)="close()"
-            (keydown.enter)="close()"
-            (keydown.space)="close()"
-          >Cancelar</button>
+          <button
+            type="submit"
+            class="btn-submit"
+            [disabled]="isSubmitting"
+            [class.submitting]="isSubmitting">
+            @if (isSubmitting) {
+              <span class="spinner"></span>
+              <span>Cadastrando...</span>
+            } @else {
+              <span>Cadastrar</span>
+            }
+          </button>
+          <button
+            type="button"
+            [disabled]="isSubmitting"
+            (click)="close()">
+            Cancelar
+          </button>
         </div>
-
         @if (errorMessage) {
           <div class="error-message">{{ errorMessage }}</div>
         }
