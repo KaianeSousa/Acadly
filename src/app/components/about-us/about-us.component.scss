@@ -1,0 +1,229 @@
+.about-us {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+  color: var(--resources-color);
+
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    &__title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    &__subtitle {
+      font-size: 1.2rem;
+      color: var(--color-aux);
+    }
+  }
+
+  &__content {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+
+    &__text {
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  &__students {
+    &__title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--secondary-color);
+    }
+
+    &__carousel {
+      position: relative;
+      overflow: hidden;
+      padding: 10px 40px;
+      padding-bottom: 2rem;
+
+      &__wrapper {
+        display: flex;
+      }
+
+      &__slide {
+        width: 200px;
+        min-width: 150px;
+      }
+
+      &__pagination {
+        bottom: 0 !important;
+
+        .swiper-pagination-bullet {
+          width: 14px;
+          height: 14px;
+          background-color: var(--secondary-color);
+          opacity: 0.5;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .swiper-pagination-bullet:hover {
+          opacity: 0.8;
+          transform: scale(1.2);
+        }
+
+        .swiper-pagination-bullet-active {
+          background-color: var(--secondary-color);
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      }
+
+      &__button--next,
+      &__button--prev {
+        color: var(--tertiary-color);
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: background-color 0.3s ease, color 0.3s ease, outline 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background-color: var(--secondary-color);
+          color: var(--primary-color)
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--secondary-color);
+          outline-offset: 2px;
+        }
+
+        &::after {
+          font-size: 1rem;
+          font-weight: bold;
+        }
+      }
+
+      &__button--prev { left: 0; }
+      &__button--next { right: 0; }
+
+      &__scrollbar {
+        background: var(--color-aux);
+
+        &-drag { background: var(--secondary-color); }
+      }
+    }
+  }
+}
+
+.student-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  border: 1px solid var(--color-aux);
+  border-radius: 12px;
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 250px;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+  }
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 1rem;
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &__name {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+
+    a {
+      color: var(--resources-color);
+      text-decoration: none;
+      transition: color 0.3s ease, outline 0.3s ease;
+
+      &:hover { color: var(--tertiary-color); }
+
+      &:focus-visible {
+        outline: 2px solid var(--secondary-color);
+        outline-offset: 2px;
+      }
+    }
+
+    .student-card__social-icon {
+      font-size: 1.8rem;
+      transition: color 0.3s ease;
+
+      &:hover { color: var(--secondary-color); }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .about-us__students__carousel {
+    padding: 10px 10px;
+
+    &__pagination,
+    .swiper-pagination {
+      display: block !important;
+      bottom: 10px !important;
+    }
+
+    &__button--next,
+    &__button--prev {
+      display: flex !important;
+      width: 32px;
+      height: 32px;
+
+      &::after { font-size: 0.9rem; }
+    }
+
+    &__button--prev { left: 6px; }
+    &__button--next { right: 6px; }
+
+    &__scrollbar { display: none !important; }
+  }
+}
+
+@media (min-width: 769px) {
+  .about-us__students__carousel {
+
+    &__pagination,
+    .swiper-pagination {
+      display: none !important;
+    }
+
+    &__button--next,
+    &__button--prev {
+      display: flex !important;
+      width: 40px;
+      height: 40px;
+    }
+
+    &__scrollbar { display: block !important; }
+  }
+}

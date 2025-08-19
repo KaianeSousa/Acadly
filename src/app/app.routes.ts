@@ -1,7 +1,9 @@
-import { Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { authGuard } from './core/guards/auth.guard';
-import {CheckIn} from './pages/check-in/check-in';
+import { CheckIn } from './pages/check-in/check-in';
+import { About } from './pages/about/about';
+
 import {AdminLogin} from './pages/admin-login/admin-login';
 import { EmployeeLogin } from './pages/employee-login/employee-login';
 
@@ -13,6 +15,7 @@ export const routes: Routes = [
       import('./pages/home/home.page').then((m) => m.HomePage)
   },
   { path: 'check-in', component: CheckIn, canActivate: [authGuard] },
+  { path: 'about-us', component: About },
   { path: 'admin/login', component: AdminLogin },
   { path: 'employee/login', component: EmployeeLogin },
   {
