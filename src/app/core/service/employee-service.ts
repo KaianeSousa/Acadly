@@ -15,7 +15,7 @@ export class EmployeeService {
     private http = inject(HttpClient);
 
     getAllEmployees(page = 0, pageSize = 10, query = ''): Observable<Pagination<Employee>> {
-      return this.http.get<Pagination<Employee>>(`${this.apiUrl}/get-all-employees?query=${query}&page=${page}&pageSize=${pageSize}`);
+      return this.http.get<Pagination<Employee>>(`${this.apiUrl}/get-all?query=${query}&page=${page}&pageSize=${pageSize}`);
     }
 
     saveEmployee(employee: Employee): Observable<Employee> {

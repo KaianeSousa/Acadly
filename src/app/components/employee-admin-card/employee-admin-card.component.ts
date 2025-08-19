@@ -1,9 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Employee } from '../../core/types/Employee';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-employee-admin-card',
-  imports: [],
+  imports: [
+    DatePipe
+  ],
   templateUrl: './employee-admin-card.component.html',
   styleUrl: './employee-admin-card.component.scss'
 })
