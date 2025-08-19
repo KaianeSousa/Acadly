@@ -38,7 +38,8 @@
       <div class="pagination-controls">
         <button (click)="previousPage(result.pagination.page)" [disabled]="result.pagination.page === 0">Anterior</button>
         <span>Página {{ result.pagination.page + 1 }} de {{ result.pagination.totalPages }}</span>
-        <button (click)="nextPage(result.pagination.page, result.pagination.totalPages)" [disabled]="result.pagination.page === result.pagination.totalPages - 1">Próxima</button>
+        <button (click)="nextPage(result.pagination.page, result.pagination.totalPages)"
+                [disabled]="result.pagination.page === result.pagination.totalPages - 1">Próxima</button>
       </div>
     }
   } @else {
@@ -55,7 +56,7 @@
 @if (isFormModalVisible) {
   <app-activity-modal-form
     [activity]="selectedActivity"
-    (close)="closeFormModal()"
+    (closeModal)="closeFormModal()"
     (save)="saveActivity($event)">
   </app-activity-modal-form>
 }

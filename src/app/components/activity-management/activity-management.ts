@@ -99,7 +99,6 @@ export class ActivityManagement implements OnInit {
         }
 
         this.toastService.showError(errorMessage);
-        console.error(err);
       }
     });
   }

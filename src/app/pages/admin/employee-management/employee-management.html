@@ -75,7 +75,7 @@
 @if (isModalVisible) {
   <app-employee-modal-form
     [employee]="selectedEmployee"
-    (close)="closeModal()"
+    (modalClose)="closeModal()"
     (save)="saveEmployee($event)"
   ></app-employee-modal-form>
 }

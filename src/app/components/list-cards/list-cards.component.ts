@@ -6,7 +6,7 @@ import {
   ViewChild,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
-  PLATFORM_ID
+  PLATFORM_ID, OnDestroy
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +22,6 @@ register();
 
 @Component({
   selector: 'app-list-cards',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -34,24 +33,14 @@ register();
   templateUrl: './list-cards.component.html',
   styleUrls: ['./list-cards.component.scss']
 })
-export class ListCardsComponent implements OnInit {
+export class ListCardsComponent implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private assetService = inject(ActivityService);
-  activities: Pagination<Activity> = {
-    data: [],
-    pagination: {
-      page: 0,
-      pageSize: 0,
-      totalElements: 0,
-      totalPages: 0,
-    },
-  };
+  activities: Pagination<Activity> = {} as Pagination<Activity>;
   isMobile = false;
 
   @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
 
-
-  // Estado do modal agora vive aqui
   isModalVisible = false;
   selectedActivity: Activity | null = null;
 
@@ -60,6 +49,12 @@ export class ListCardsComponent implements OnInit {
       this.checkScreen();
     }
     this.getAllActivities();
+  }
+
+  ngOnDestroy(): void {
+    if (this.swiperContainerRef?.nativeElement?.swiper) {
+      this.swiperContainerRef.nativeElement.swiper.destroy(true, true);
+    }
   }
 
   @HostListener('window:resize')
@@ -79,12 +74,10 @@ export class ListCardsComponent implements OnInit {
     });
   }
 
-  // Métodos do modal agora vivem aqui
-  showDetails(activity: Activity): void {
+  showDetails(activity: any): void {
     this.selectedActivity = activity;
     this.isModalVisible = true;
   }
-
   hideDetails(): void {
     this.isModalVisible = false;
   }

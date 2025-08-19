@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Event} from '../../core/types/Event';
+import {Activity} from '../../core/types/Activity';
 
 @Component({
   selector: 'app-activity-modal',
@@ -8,16 +10,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class ActivityModal {
   @Input() isVisible = false;
-  @Input() title = '';
-  @Input() content = '';
 
+  @Input() activity: Activity | null = null;
   @Output() closeModal = new EventEmitter<void>();
 
-  onClose(event?: MouseEvent): void {
-    if (event && event.target !== event.currentTarget) {
+  onClose(mouseEvent?: MouseEvent): void {
+    if (mouseEvent && mouseEvent.target !== mouseEvent.currentTarget) {
       return;
     }
-
-    this.isVisible = false;
+    this.closeModal.emit();
   }
 }

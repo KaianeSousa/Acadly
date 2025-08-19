@@ -56,8 +56,6 @@ export class AuthService {
   private decodeAndSetUser(token: string): void {
     try {
       const decodedToken: DecodedToken = jwtDecode(token);
-      console.log('✅ Token Decodificado:', decodedToken);
-
       this.currentUser.set({
         name: decodedToken.name,
         email: decodedToken.email,
