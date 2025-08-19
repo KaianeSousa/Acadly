@@ -5,7 +5,7 @@ import {EventManagement} from './event-management/event-management';
 import {EmployeeManagement} from './employee-management/employee-management';
 import {QrcodeCheckIn} from './qrcode-check-in/qrcode-check-in';
 import {NumericCodeCheckIn} from './numeric-code-check-in/numeric-code-check-in';
-import {EventDetail} from './event-detail/event-detail/event-detail';
+import {EventDetail} from './event-detail/event-detail';
 
 export const ADMIN_ROUTES: Routes = [
   {
