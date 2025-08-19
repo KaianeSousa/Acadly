@@ -19,14 +19,14 @@ interface Student {
 })
 export class AboutUs implements AfterViewInit {
   students: Student[] = [
-    { name: 'Douglas', githubUrl: 'https://github.com/Douglas16yanc', linkedinUrl: 'https://linkedin.com/Douglas', avatarUrl: '/assets/avatars/douglas.png' },
-    { name: 'Kaiane', githubUrl: 'https://github.com/KaianeSousa', linkedinUrl: 'https://linkedin.com/Kaiane', avatarUrl: '/assets/avatars/kaiane.png' },
-    { name: 'Letícia', githubUrl: 'https://github.com/Leititcia', linkedinUrl: 'https://www.linkedin.com/in/leititciavale', avatarUrl: '/assets/avatars/leticia.png' },
-    { name: 'Lívia Mota', githubUrl: 'https://github.com/LíviaMota', linkedinUrl: 'https://linkedin.com/LíviaMota', avatarUrl: '/assets/avatars/livia-mota.png' },
-    { name: 'Lívia Noronha', githubUrl: 'https://github.com/LíviaNoronha', linkedinUrl: 'https://linkedin.com/LíviaNoronha', avatarUrl: '/assets/avatars/livia-noronha.png' },
-    { name: 'Lucas', githubUrl: 'https://github.com/Lucas', linkedinUrl: 'https://linkedin.com/Lucas', avatarUrl: '/assets/avatars/lucas.png' },
-    { name: 'Micaele', githubUrl: 'https://github.com/Micaele', linkedinUrl: 'https://linkedin.com/Micaele', avatarUrl: '/assets/avatars/micaele.png' },
-    { name: 'Wesley', githubUrl: 'https://github.com/Wesley00s', linkedinUrl: 'https://linkedin.com/Wesley', avatarUrl: '/assets/avatars/wesley.png' },
+    { name: 'Douglas', githubUrl: 'https://github.com/Doug16yanc', linkedinUrl: 'https://linkedin.com/in/douglas-holanda-113519269', avatarUrl: '/assets/avatars/douglas.png' },
+    { name: 'Kaiane', githubUrl: 'https://github.com/KaianeSousa', linkedinUrl: 'https://linkedin.com/in/kaianem/', avatarUrl: '/assets/avatars/kaiane.png' },
+    { name: 'Letícia', githubUrl: 'https://github.com/Leititcia', linkedinUrl: 'https://linkedin.com/in/leititciavale', avatarUrl: '/assets/avatars/leticia.png' },
+    { name: 'Lívia Mota', githubUrl: 'https://github.com/Motaplivia', linkedinUrl: 'https://linkedin.com/in/motaplivia', avatarUrl: '/assets/avatars/livia-mota.png' },
+    { name: 'Lívia Noronha', githubUrl: '#', linkedinUrl: 'https://linkedin.com/in/livia-p-072244197', avatarUrl: '/assets/avatars/livia-noronha.png' },
+    { name: 'Lucas', githubUrl: '#', linkedinUrl: 'https://linkedin.com/in/lucasmew', avatarUrl: '/assets/avatars/lucas.jpg' },
+    { name: 'Micaele', githubUrl: '#', linkedinUrl: '#', avatarUrl: '/assets/avatars/micaele.png' },
+    { name: 'Wesley', githubUrl: 'https://github.com/Wesley00s', linkedinUrl: 'https://linkedin.com/in/wesley-rodrigues-de-sousa', avatarUrl: '/assets/avatars/wesley.png' },
   ];
 
   private swiperModules = [Pagination, Navigation, Scrollbar, Keyboard];
@@ -78,4 +78,5 @@ export class AboutUs implements AfterViewInit {
       },
     });
   }
+
 }
