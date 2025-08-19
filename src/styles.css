@@ -2,19 +2,27 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+/*Importação de estilo do swiper*/
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
+@import 'swiper/scss/pagination';
+@import 'swiper/scss/scrollbar';
+
+
 html, body {
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans', sans-serif;
     background-color: var(--primary-color);
     height: 100%;
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 :root {
     --primary-color: #FAFAFA;
     --secondary-color: #7F2A33;
     --tertiary-color: rgb(80, 4, 11);
+    --sub-footer-color:  #721720;
     --resources-color: #111;
     --color-aux: #9c9b9b;
     --secondary-color-aux: #0030cc;
