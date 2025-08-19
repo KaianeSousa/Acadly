@@ -64,8 +64,7 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/app-institution']);
   }
 
-
-  goToAboutUspage() {
+  goToAboutUsPage() {
     return this.router.navigate(['/about-us'])
   }
 

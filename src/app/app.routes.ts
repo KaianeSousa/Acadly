@@ -15,6 +15,7 @@ export const routes: Routes = [
       import('./pages/home/home.page').then((m) => m.HomePage)
   },
   { path: 'check-in', component: CheckIn, canActivate: [authGuard] },
+  { path: 'about-us', component: About },
   { path: 'admin/login', component: AdminLogin },
   { path: 'employee/login', component: EmployeeLogin },
   {
