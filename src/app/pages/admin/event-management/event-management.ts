@@ -8,20 +8,22 @@ import {AsyncPipe} from '@angular/common';
 import {EventModalForm} from '../../../components/event-modal-form/event-modal-form';
 import {AlertModalComponent} from '../../../components/alert-modal/alert-modal.component';
 import {ToastService} from '../../../core/service/toast-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-event-management',
   imports: [
     EventAdminCard,
     AsyncPipe,
-    EventModalForm,
-    AlertModalComponent
+    AlertModalComponent,
+    EventModalForm
   ],
   templateUrl: './event-management.html',
   styleUrl: './event-management.scss'
 })
 export class EventManagement {
-  private assetService = inject(EventService);
+  private eventService = inject(EventService);
+  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
   pageSize = 8;
@@ -35,7 +37,7 @@ export class EventManagement {
       debounceTime(300), distinctUntilChanged())
   ]).pipe(
     switchMap(([currentPage, currentQuery]) =>
-      this.assetService.getAllEvents(currentPage as number, this.pageSize, currentQuery as string)
+      this.eventService.getAllEvents(currentPage as number, this.pageSize, currentQuery as string)
     )
   );
 
@@ -62,7 +64,7 @@ export class EventManagement {
 
   onEventSelected(event: Event): void {
     this.selectedEvent = event;
-    this.isModalVisible = true;
+    this.router.navigate(['/admin/events', event.id]);
   }
 
   closeModal(): void {
@@ -70,7 +72,7 @@ export class EventManagement {
   }
 
   saveEvent(event: Event): void {
-    this.assetService.saveEvent(event).subscribe({
+    this.eventService.saveEvent(event).subscribe({
       next: () => {
         const message = event.id ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!';
         this.toastService.showSuccess(message);
@@ -93,7 +95,7 @@ export class EventManagement {
   handleAlertClose(confirmed: boolean): void {
     this.isAlertVisible = false;
     if (confirmed && this.eventIdToDelete !== null) {
-      this.assetService.deleteEvent(this.eventIdToDelete).subscribe({
+      this.eventService.deleteEvent(this.eventIdToDelete).subscribe({
         next: () => {
           this.toastService.showSuccess('Evento excluído com sucesso.');
           this.refreshData();

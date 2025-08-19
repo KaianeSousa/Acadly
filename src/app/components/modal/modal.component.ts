@@ -5,6 +5,7 @@ import { Participant } from '../../core/types/Participant';
 import { ClassificationService } from '../../core/service/classification-service';
 import { ParticipantService } from '../../core/service/participant-service';
 import { EventService } from '../../core/service/event-service';
+import {ToastService} from '../../core/service/toast-service';
 
 @Component({
   selector: 'app-modal',
@@ -26,6 +27,7 @@ export class ModalComponent implements OnInit {
   private participantService = inject(ParticipantService);
   private eventService = inject(EventService);
   private fb = inject(FormBuilder);
+  private toastService = inject(ToastService);
 
   constructor() {
     this.participantForm = this.fb.group({
@@ -77,16 +79,17 @@ export class ModalComponent implements OnInit {
 
       this.participantService.createParticipant(this.eventId, participant).subscribe({
         next: () => {
+          this.toastService.showSuccess('Participante cadastrado com sucesso! Verifique seu email para confirmar o ingresso.');
           this.close();
         },
         error: (error) => {
-          this.errorMessage = 'Erro ao cadastrar participante: ' + (error.error || error.message);
+          this.toastService.showError('Erro ao cadastrar participante: ' + (error.error.message) || 'Tente novamente.');
         },
       });
     } else {
       this.participantForm.markAllAsTouched();
       if (!this.eventId) {
-        this.errorMessage = 'ID do evento não fornecido.';
+        this.toastService.showError("Evento não encontrado");
       }
     }
   }
@@ -112,7 +115,6 @@ export class ModalComponent implements OnInit {
     control?.updateValueAndValidity();
     this.dropdownOpen = false;
   }
-
 
   get nome() {
     return this.participantForm.get('nome');

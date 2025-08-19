@@ -19,7 +19,8 @@ import {NavbarComponent} from '../../components/navbar/navbar.component';
     BannerComponent,
     HeroSectionComponent,
     ListCardsComponent,
-    NavbarComponent
+    NavbarComponent,
+    ListCardsComponent
   ],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],

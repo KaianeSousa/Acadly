@@ -75,9 +75,8 @@
 @if (isModalVisible) {
   <app-event-modal-form
     [event]="selectedEvent"
-    (close)="closeModal()"
+    (closeModal)="closeModal()"
     (save)="saveEvent($event)"
-    (delete)="deleteEvent($event)"
   ></app-event-modal-form>
 }
 
