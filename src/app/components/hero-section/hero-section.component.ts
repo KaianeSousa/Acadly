@@ -24,20 +24,13 @@ export class HeroSectionComponent implements OnInit {
     }
   }
 
- /* onModalClose() {
-  } */
-
   ngOnInit(): void {
     this.getEvent();
   }
 
   getEvent() {
-    // 6. Atribuir o Observable diretamente e tratar erros
     this.event$ = this.eventService.getEvent().pipe(
-      catchError(error => {
-        // Se a API retornar um erro (ex: 404 Not Found),
-        // o console mostrará o erro, e retornaremos um observable com 'null'.
-        console.error('Nenhum evento ativo encontrado ou falha na API:', error);
+      catchError(() => {
         return of(null);
       })
     );

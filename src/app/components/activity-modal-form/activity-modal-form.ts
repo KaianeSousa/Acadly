@@ -43,10 +43,11 @@ export class ActivityModalForm implements OnInit{
 
   onClose(event?: MouseEvent): void {
     if (event) {
-      if (event.target !== event.currentTarget) {
+      if (event.target === event.currentTarget) {
         this.closeModal.emit();
-        return;
       }
+    } else {
+      this.closeModal.emit();
     }
   }
 }

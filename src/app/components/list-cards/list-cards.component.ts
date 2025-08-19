@@ -74,7 +74,7 @@ export class ListCardsComponent implements OnInit, OnDestroy {
     });
   }
 
-  showDetails(activity: any): void {
+  showDetails(activity: Activity): void {
     this.selectedActivity = activity;
     this.isModalVisible = true;
   }
