@@ -1,4 +1,3 @@
-
 .event-detail-page {
   background-color: var(--primary-color, #fff);
   border-radius: 12px;
@@ -291,7 +290,6 @@ table {
 }
 
 
-
 @media (max-width: 768px) {
   .participants-table-container {
     border: none;
@@ -314,10 +312,13 @@ table {
     td {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       text-align: right;
       padding: 10px;
       border-bottom: 1px solid #f1f3f5;
+
+      overflow-wrap: break-word;
+      word-break: break-word;
 
       &::before {
         content: attr(data-label);
@@ -325,6 +326,7 @@ table {
         color: #495057;
         text-align: left;
         margin-right: 1rem;
+        white-space: nowrap;
       }
 
       &:last-child {
