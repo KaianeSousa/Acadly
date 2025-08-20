@@ -5,6 +5,7 @@ import {Event} from "../types/Event";
 import {environment} from '../../../environment/enviroment';
 import {Pagination} from '../types/Pagination';
 import {format, parse} from 'date-fns';
+import {Participant} from '../types/Participant';
 
 
 @Injectable({
@@ -62,12 +63,12 @@ export class EventService {
     return this.http.get<Event>(`${this.apiUrl}/get-event/${id}`);
   }
 
-  isEventActive(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/exists-active`);
-  }
-
   deleteEvent(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  }
+
+  getParticipantsByEvent(eventId: number, page = 0, pageSize = 10): Observable<Pagination<Participant>> {
+    return this.http.get<Pagination<Participant>>(`${this.apiUrl}/get-participants/${eventId}?page=${page}&pageSize=${pageSize}`);
   }
 }
 

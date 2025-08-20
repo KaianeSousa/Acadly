@@ -3,7 +3,13 @@ import { Event } from "../../core/types/Event";
 import { EventService } from '../../core/service/event-service';
 import { ModalComponent } from '../modal/modal.component';
 import {AsyncPipe, NgOptimizedImage} from '@angular/common';
-import {catchError, Observable, of} from 'rxjs';
+import {catchError, map, Observable, of, startWith} from 'rxjs';
+
+interface EventState {
+  loading: boolean;
+  event: Event | null;
+}
+
 
 @Component({
   selector: 'app-hero-section',
@@ -13,7 +19,7 @@ import {catchError, Observable, of} from 'rxjs';
   styleUrl: './hero-section.component.scss'
 })
 export class HeroSectionComponent implements OnInit {
-  event$!: Observable<Event | null>;
+  eventState$!: Observable<EventState>;
 
   private eventService = inject(EventService);
   @ViewChild(ModalComponent) modal!: ModalComponent;
@@ -29,10 +35,11 @@ export class HeroSectionComponent implements OnInit {
   }
 
   getEvent() {
-    this.event$ = this.eventService.getEvent().pipe(
-      catchError(() => {
-        return of(null);
-      })
+    this.eventState$ = this.eventService.getEvent().pipe(
+      map(eventData => ({ loading: false, event: eventData })),
+      startWith({ loading: true, event: null }),
+      catchError(() => of({ loading: false, event: null }))
     );
   }
+
 }
