@@ -1,0 +1,49 @@
+<div
+  class="modal-overlay"
+  (click)="onClose($event)"
+  (keydown.enter)="onClose()"
+  role="button"
+  tabindex="0">
+
+  <div class="modal-content">
+    <header class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Atividade' : 'Adicionar Nova Atividade' }}</h2>
+      <button class="close-button" (click)="onClose()" aria-label="Fechar modal">&times;</button>
+    </header>
+
+    <form class="modal-body" [formGroup]="activityForm" (ngSubmit)="onSave()">
+      <div class="form-group">
+        <label for="name">Nome da Atividade</label>
+        <input id="name" type="text" formControlName="name" placeholder="Ex: Palestra de Abertura">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <textarea id="description" formControlName="description" rows="3" placeholder="Descreva a atividade..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dateTime">Data e Hora</label>
+          <input id="dateTime" type="date" formControlName="dateTime">
+        </div>
+        <div class="form-group">
+          <label for="duration">Duração (minutos)</label>
+          <input id="duration" type="number" formControlName="duration" placeholder="Ex: 60">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="local">Local</label>
+        <input id="local" type="text" formControlName="local" placeholder="Ex: Auditório Principal">
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="button-secondary" (click)="onClose()">Cancelar</button>
+        <button type="submit" class="button-primary" [disabled]="activityForm.invalid">
+          {{ isEditMode ? 'Salvar Alterações' : 'Criar Atividade' }}
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:events": "node dist/events/server/server.mjs"
+    "serve:ssr:events": "node dist/events/server/server.mjs",
+    "lint": "ng lint"
   },
   "prettier": {
     "overrides": [
@@ -21,6 +22,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^20.1.6",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
     "@angular/core": "^20.1.0",
@@ -36,7 +38,9 @@
     "@ng-select/ng-select": "^20.1.0",
     "@zxing/ngx-scanner": "^20.0.0",
     "bootstrap": "^5.3.7",
+    "date-fns": "^4.1.0",
     "express": "^5.1.0",
+    "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.10",
     "tslib": "^2.3.0"
@@ -48,12 +52,15 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "angular-eslint": "20.1.1",
+    "eslint": "^9.29.0",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "typescript-eslint": "8.34.1"
   }
 }

@@ -1,0 +1,58 @@
+<div class="checkin-page-container">
+  <h1>Check-in por Código</h1>
+
+  @if (!validationResult) {
+    <p class="subtitle">Digite os 6 números do código do participante para validar a entrada.</p>
+
+    <form class="input-form" [formGroup]="checkinForm" (ngSubmit)="verifyCode()">
+
+      <div class="input-wrapper">
+        <span class="input-prefix">{{ prefix }}</span>
+        <input
+          type="text"
+          inputmode="numeric"
+          formControlName="numericCode"
+          placeholder="000001"
+          maxlength="6"
+          class="form-control"
+          [class.is-invalid]="numericCode!.invalid && numericCode!.touched"
+          autocomplete="off"
+        />
+      </div>
+
+      @if (numericCode!.invalid && numericCode!.touched) {
+        <div class="validation-error">
+          Você deve inserir os 6 números do código.
+        </div>
+      }
+
+      <button type="submit" class="btn btn-primary" [disabled]="isProcessing || checkinForm.invalid">
+        @if (isProcessing) {
+          <span>Validando...</span>
+        } @else {
+          <span>Validar Código</span>
+        }
+      </button>
+    </form>
+  }
+
+  @if (validationResult) {
+    <div class="result-container" [ngClass]="validationResult.cssClass">
+      <h2>{{ validationResult.message }}</h2>
+
+      @if (validationResult.participantName) {
+        <p>
+          <strong>Participante:</strong> {{ validationResult.participantName }}
+        </p>
+      }
+
+      @if (validationResult.eventName) {
+        <p>
+          <strong>Evento:</strong> {{ validationResult.eventName }}
+        </p>
+      }
+
+      <button class="btn-rescan" (click)="resetForm()">Verificar Outro Código</button>
+    </div>
+  }
+</div>

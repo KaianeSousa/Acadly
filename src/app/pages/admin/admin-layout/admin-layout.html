@@ -1,0 +1,80 @@
+<div class="admin-layout" [class.sidebar-visible]="isSidebarVisible">
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logo.png" alt="Acadly Logo" class="header-logo" />
+      <h3 class="header-title">Acadly Admin</h3>
+    </div>
+
+    @if(userName()) {
+      <div class="user-profile">
+        <div class="user-avatar">
+          {{ userName()!.charAt(0) | uppercase }}
+        </div>
+        <div class="user-details">
+          <span>Bem-vindo,</span>
+          <strong>{{ userName() }}</strong>
+        </div>
+      </div>
+    }
+
+    <nav class="sidebar-nav">
+      <ul>
+        @if (userRole() === 'ADMIN') {
+          @for (link of adminLinks; track link.path) {
+            <li>
+              <a [routerLink]="link.path" routerLinkActive="active-link" (click)="isSidebarVisible = false">
+                <img [ngSrc]=link.svg alt="Ícone" class="sidebar-icon" height="24" width="24">
+                <span>{{ link.label }}</span>
+              </a>
+            </li>
+          }
+        }
+
+        @if (userRole() === 'EMPLOYEE') {
+          @for (link of employeeLinks; track link.path) {
+            <li>
+              <a [routerLink]="link.path" routerLinkActive="active-link" (click)="isSidebarVisible = false">
+                <img [ngSrc]=link.svg alt="Ícone" class="sidebar-icon" height="24" width="24">
+                <span>{{ link.label }}</span>
+              </a>
+            </li>
+          }
+        }
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a
+      (click)="logout()"
+      (keydown.enter)="logout()"
+      (keydown.space)="logout()"
+      tabindex="0"
+      role="button"
+       class="footer-link logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sair</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay"
+      (click)="toggleSidebar()"
+      (keydown.enter)="toggleSidebar()"
+      (keydown.space)="toggleSidebar()"
+      tabindex="0"
+      role="button"
+  ></div>
+
+  <main class="admin-content">
+    <header class="content-header">
+      <app-burger-button
+        [isOpen]="isSidebarVisible"
+        (toggled)="toggleSidebar()"
+      ></app-burger-button>
+    </header>
+
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

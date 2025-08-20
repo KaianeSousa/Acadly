@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Classification } from '../../core/types/Classification';
-import { Participant } from '../../core/types/Participant';
-import { ClassificationService } from '../../core/service/classification-service';
-import { ParticipantService } from '../../core/service/participant-service';
-import { EventService } from '../../core/service/event-service';
+import {Component, EventEmitter, OnInit, Output, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Participant} from '../../core/types/Participant';
+import {ClassificationService} from '../../core/service/classification-service';
+import {ParticipantService} from '../../core/service/participant-service';
+import {EventService} from '../../core/service/event-service';
+import {ToastService} from '../../core/service/toast-service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -22,26 +23,29 @@ export class ModalComponent implements OnInit {
   isModalOpen = false;
   dropdownOpen = false;
   errorMessage: string | null = null;
+  isSubmitting = false;
 
   private classificationService = inject(ClassificationService);
   private participantService = inject(ParticipantService);
   private eventService = inject(EventService);
   private fb = inject(FormBuilder);
+  private toastService = inject(ToastService);
 
   constructor() {
     this.participantForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      presenca: [false],
+      presenca: [true],
       tipoIngresso: ['', Validators.required],
     });
   }
+
   ngOnInit(): void {
     this.getTypes();
 
     this.eventService.getEvent().subscribe({
       next: (eventData) => {
-        this.eventId = eventData.id;
+        this.eventId = eventData.id!;
       },
       error: (error) => {
         this.errorMessage = 'Erro ao carregar evento ativo: ' + (error.message || 'Tente novamente.');
@@ -50,12 +54,10 @@ export class ModalComponent implements OnInit {
   }
 
   getTypes() {
-    this.classificationService.getClassificationTypes().subscribe( data => {
+    this.classificationService.getClassificationTypes().subscribe(data => {
       this.classificationTypes = data;
-      console.log(data);
     })
   }
-
 
   openModal() {
     this.isModalOpen = true;
@@ -70,28 +72,38 @@ export class ModalComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.eventId);
-    if (this.participantForm.valid && this.eventId) {
-      const participant: Participant = {
-        name: this.participantForm.get('nome')?.value,
-        email: this.participantForm.get('email')?.value,
-        participantType: this.participantForm.get('tipoIngresso')?.value,
-      };
+    if (this.participantForm.invalid || !this.eventId) {
+      this.participantForm.markAllAsTouched();
+      if (!this.eventId) {
+        this.toastService.showError("Evento não encontrado");
+      }
+      return;
+    }
 
-      this.participantService.createParticipant(this.eventId, participant).subscribe({
+    this.isSubmitting = true;
+    this.participantForm.disable();
+    const participant: Participant = {
+      name: this.participantForm.get('nome')?.value,
+      email: this.participantForm.get('email')?.value,
+      participantType: this.participantForm.get('tipoIngresso')?.value,
+    };
+
+    this.participantService.createParticipant(this.eventId, participant)
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+          this.participantForm.enable();
+        })
+      )
+      .subscribe({
         next: () => {
+          this.toastService.showSuccess('Participante cadastrado com sucesso! Verifique seu email para confirmar o ingresso.');
           this.close();
         },
         error: (error) => {
-          this.errorMessage = 'Erro ao cadastrar participante: ' + (error.error || error.message);
+          this.toastService.showError('Erro ao cadastrar participante: ' + (error.error.message || 'Tente novamente.'));
         },
       });
-    } else {
-      this.participantForm.markAllAsTouched();
-      if (!this.eventId) {
-        this.errorMessage = 'ID do evento não fornecido.';
-      }
-    }
   }
 
   toggleDropdown() {
@@ -106,7 +118,7 @@ export class ModalComponent implements OnInit {
   }
 
 
-  selectOption(value: string, event: MouseEvent) {
+  selectOption(value: string, event: Event) {
     event.stopPropagation();
     const control = this.participantForm.get('tipoIngresso');
     control?.setValue(value);
@@ -116,13 +128,14 @@ export class ModalComponent implements OnInit {
     this.dropdownOpen = false;
   }
 
-
   get nome() {
     return this.participantForm.get('nome');
   }
+
   get email() {
     return this.participantForm.get('email');
   }
+
   get tipoIngresso() {
     return this.participantForm.get('tipoIngresso');
   }

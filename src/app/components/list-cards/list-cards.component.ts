@@ -4,11 +4,11 @@ import {
   inject,
   HostListener,
   ViewChild,
-  AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef
+  ElementRef,
+  PLATFORM_ID, OnDestroy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {register, SwiperContainer} from 'swiper/element/bundle';
@@ -16,128 +16,69 @@ import { Activity } from '../../core/types/Activity';
 import { ActivityService } from '../../core/service/activity-service';
 import { CardsComponent } from '../cards/cards.component';
 import {Pagination} from '../../core/types/Pagination';
+import {ActivityModal} from '../activity-modal/activity-modal';
 
 register();
 
 @Component({
   selector: 'app-list-cards',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     NgSelectModule,
-    CardsComponent
+    CardsComponent,
+    ActivityModal
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './list-cards.component.html',
   styleUrls: ['./list-cards.component.scss']
 })
-export class ListCardsComponent implements OnInit, AfterViewInit {
+export class ListCardsComponent implements OnInit, OnDestroy {
+  private readonly platformId = inject(PLATFORM_ID);
   private assetService = inject(ActivityService);
-  activities: Pagination<Activity> = {
-    data: [],
-    pagination: {
-      page: 0,
-      pageSize: 0,
-      totalElements: 0,
-      totalPages: 0,
-    },
-  };
+  activities: Pagination<Activity> = {} as Pagination<Activity>;
   isMobile = false;
-  private viewInitialized = false;
-  private swiperInitialized = false;
 
   @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
 
+  isModalVisible = false;
+  selectedActivity: Activity | null = null;
+
   ngOnInit(): void {
-    this.checkScreen();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreen();
+    }
     this.getAllActivities();
   }
 
-  ngAfterViewInit(): void {
-    this.viewInitialized = true;
-    this.initSwiperIfNeeded();
+  ngOnDestroy(): void {
+    if (this.swiperContainerRef?.nativeElement?.swiper) {
+      this.swiperContainerRef.nativeElement.swiper.destroy(true, true);
+    }
   }
 
   @HostListener('window:resize')
   onResize() {
     this.checkScreen();
-    this.initSwiperIfNeeded();
   }
 
   checkScreen() {
-    this.isMobile = window.innerWidth <= 768;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
   }
 
   getAllActivities(): void {
-      this.assetService.getAllActivities().subscribe(data => {
-        this.activities = data;
-        this.initSwiperIfNeeded();
-      });
+    this.assetService.getAllActivities().subscribe(data => {
+      this.activities = data;
+    });
   }
 
-  private initSwiperIfNeeded() {
-    if (this.activities.data.length > 0 && this.viewInitialized) {
-      this.initSwiper();
-    }
+  showDetails(activity: Activity): void {
+    this.selectedActivity = activity;
+    this.isModalVisible = true;
   }
-
-  private initSwiper() {
-    if (!this.swiperContainerRef?.nativeElement) {
-      console.error("Swiper container não encontrado!");
-      return;
-    }
-
-    if (this.swiperInitialized) {
-      this.swiperContainerRef.nativeElement.swiper?.update();
-      return;
-    }
-    const swiperParams = this.isMobile
-      ? {
-          slidesPerView: 1,
-          spaceBetween: 16,
-          centeredSlides: true,
-          pagination: {
-            clickable: true,
-            type: 'bullets',
-          },
-          navigation: false,
-          breakpoints: {
-            640: {
-              slidesPerView: 1.2,
-            },
-            768: {
-              slidesPerView: 1.5,
-            },
-          },
-        }
-      : {
-          slidesPerView: 3,
-          spaceBetween: 20,
-          centeredSlides: false,
-          pagination: false,
-          navigation: {
-            nextEl: '.carousel__nav-next',
-            prevEl: '.carousel__nav-prev',
-          },
-          breakpoints: {
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-            1200: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-          },
-        };
-
-    Object.assign(this.swiperContainerRef.nativeElement, swiperParams);
-
-    if (!this.swiperContainerRef.nativeElement.swiper) {
-      this.swiperContainerRef.nativeElement.initialize();
-    } else {
-      this.swiperContainerRef.nativeElement.swiper.update();
-    }
+  hideDetails(): void {
+    this.isModalVisible = false;
   }
 }
