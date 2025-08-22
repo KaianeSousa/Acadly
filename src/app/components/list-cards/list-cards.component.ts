@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   inject,
-  HostListener,
   ViewChild,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
@@ -18,7 +17,7 @@ import { CardsComponent } from '../cards/cards.component';
 import {Pagination} from '../../core/types/Pagination';
 import {ActivityModal} from '../activity-modal/activity-modal';
 import {catchError, map, Observable, of, startWith} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {SwiperOptions} from 'swiper/types';
 
 register();
 
@@ -45,70 +44,43 @@ export class ListCardsComponent implements OnInit, OnDestroy {
 
   private readonly platformId = inject(PLATFORM_ID);
   private assetService = inject(ActivityService);
-  activities: Pagination<Activity> = {} as Pagination<Activity>;
-  isMobile = false;
 
-  @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
+  private swiperContainerEl: ElementRef<SwiperContainer> | undefined;
+  @ViewChild('swiperContainer') set swiperContainer(el: ElementRef<SwiperContainer>) {
+    if (el) {
+      this.swiperContainerEl = el;
+      this.initializeSwiper();
+    }
+  }
 
   isModalVisible = false;
   selectedActivity: Activity | null = null;
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreen();
-    }
     this.loadActivities();
   }
 
   ngOnDestroy(): void {
-    if (this.swiperContainerRef?.nativeElement?.swiper) {
-      this.swiperContainerRef.nativeElement.swiper.destroy(true, true);
-    }
-  }
-
-  @HostListener('window:resize')
-  onResize() {
-    this.checkScreen();
-  }
-
-  checkScreen() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMobile = window.innerWidth <= 768;
-    }
+    this.swiperContainerEl?.nativeElement?.swiper?.destroy(true, true);
   }
 
   loadActivities(): void {
     this.activitiesState$ = this.assetService.getAllActivities().pipe(
       map(data => ({ loading: false, activities: data })),
-      tap(state => {
-        if (isPlatformBrowser(this.platformId) && state.activities && state.activities.data.length > 0) {
-          setTimeout(() => this.initializeOrUpdateSwiper(), 0);
-        }
-      }),
       startWith({ loading: true, activities: null }),
       catchError(() => of({ loading: false, activities: null }))
     );
   }
 
-  showDetails(activity: Activity): void {
-    this.selectedActivity = activity;
-    this.isModalVisible = true;
-  }
-
-  hideDetails(): void {
-    this.isModalVisible = false;
-  }
-
-
-  initializeOrUpdateSwiper(): void {
-    if (!this.swiperContainerRef?.nativeElement) return;
-
-    if (this.swiperContainerRef.nativeElement.swiper) {
-      this.swiperContainerRef.nativeElement.swiper.update();
+  initializeSwiper(): void {
+    if (!isPlatformBrowser(this.platformId) || !this.swiperContainerEl?.nativeElement) {
       return;
     }
 
-    const swiperOptions = {
+    const swiperEl = this.swiperContainerEl.nativeElement;
+    if (swiperEl.swiper) return;
+
+    const swiperOptions: SwiperOptions = {
       slidesPerView: 1,
       spaceBetween: 16,
       centeredSlides: true,
@@ -123,7 +95,17 @@ export class ListCardsComponent implements OnInit, OnDestroy {
         }
       },
     };
-    Object.assign(this.swiperContainerRef.nativeElement, swiperOptions);
-    this.swiperContainerRef.nativeElement.initialize();
+
+    Object.assign(swiperEl, swiperOptions);
+    swiperEl.initialize();
+  }
+
+  showDetails(activity: Activity): void {
+    this.selectedActivity = activity;
+    this.isModalVisible = true;
+  }
+
+  hideDetails(): void {
+    this.isModalVisible = false;
   }
 }
