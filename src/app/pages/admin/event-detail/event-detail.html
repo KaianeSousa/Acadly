@@ -26,6 +26,8 @@
       <h2>Detalhes do Evento</h2>
       <p><strong>Data:</strong> {{ event.initialDateTime | date:'dd/MM/yyyy, HH:mm' }} a {{ event.finalDateTime| date:'dd/MM/yyyy, HH:mm' }}</p>
       <p><strong>Local:</strong> {{ event.local }}</p>
+      <p><strong>Carga Horária:</strong> {{ event.workload }} horas</p>
+      <p><strong>Coordenador:</strong> {{ event.coordinator }}</p>
       <p><strong>Descrição:</strong> {{ event.description }}</p>
     </section>
     <hr>

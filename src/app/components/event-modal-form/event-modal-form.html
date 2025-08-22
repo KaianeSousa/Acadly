@@ -49,7 +49,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="local">Local</label>
-          <input id="local" type="text" formControlName="local" placeholder="Ex: Praia Central">
+          <input id="local" type="text" formControlName="local" placeholder="Ex: IFCE - Campus ...">
         </div>
 
         <div class="form-group">
@@ -58,6 +58,17 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coordinatorName">Nome do(a) Coordenador(a)</label>
+          <input id="coordinatorName" type="text" formControlName="coordinatorName" placeholder="Ex: João da Silva">
+        </div>
+
+        <div class="form-group">
+          <label for="coordinatorInstitution">Instituição do Coordenador</label>
+          <input id="coordinatorInstitution" type="text" formControlName="coordinatorInstitution" placeholder="Ex: IFCE - Campus ...">
+        </div>
+      </div>
       <div class="form-group-inline">
         <input id="isActive" type="checkbox" formControlName="isActive">
         <label for="isActive">Evento Ativo</label>

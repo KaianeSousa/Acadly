@@ -5,6 +5,7 @@ export interface Event {
   initialDateTime: string;
   finalDateTime: string;
   local: string;
+  coordinator: string;
   workload: number;
   isActive: boolean;
 }

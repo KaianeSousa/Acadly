@@ -29,6 +29,14 @@ export class EventModalForm implements OnInit {
 
   ngOnInit(): void {
     this.isEditMode = !!this.event;
+    let coordinatorName = '';
+    let coordinatorInstitution = '';
+
+    if (this.event && this.event.coordinator) {
+      const parts = this.event.coordinator.split(',');
+      coordinatorName = parts[0]?.trim() || '';
+      coordinatorInstitution = parts.slice(1).join(',')?.trim() || '';
+    }
 
     this.eventForm = this.fb.group({
       id: [this.event?.id || null],
@@ -38,6 +46,8 @@ export class EventModalForm implements OnInit {
       finalDateTime: [this.event?.finalDateTime, Validators.required],
       local: [this.event?.local || '', Validators.required],
       workload: [this.event?.workload || '', [Validators.required, Validators.min(1)]],
+      coordinatorName: [coordinatorName, Validators.required],
+      coordinatorInstitution: [coordinatorInstitution, Validators.required],
       isActive: [this.event?.isActive ?? true, Validators.required]
     });
   }
@@ -47,7 +57,15 @@ export class EventModalForm implements OnInit {
       this.eventForm.markAllAsTouched();
       return;
     }
-    this.save.emit(this.eventForm.value);
+
+    const formValue = this.eventForm.getRawValue();
+    const { coordinatorName, coordinatorInstitution, ...restOfEvent } = formValue;
+    const eventToSave: Event = {
+      ...restOfEvent,
+      coordinator: `${coordinatorName}, ${coordinatorInstitution}`
+    } as Event;
+
+    this.save.emit(eventToSave);
   }
 
   onClose(): void {

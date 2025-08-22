@@ -86,7 +86,8 @@ export class EventDetail implements OnInit {
         this.loadEvent();
       },
       error: (err) => {
-        this.toastService.showError(err.error?.message || 'Falha ao salvar o evento. Tente novamente.');
+        this.toastService.showError(err.error?.message || err || 'Falha ao salvar o evento. Tente novamente.');
+        console.error(err);
       }
     });
   }

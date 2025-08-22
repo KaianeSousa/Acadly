@@ -21,12 +21,12 @@
       </div>
       <form [formGroup]="participantForm" (ngSubmit)="onSubmit()" id="cadastro-form">
         <div class="form-group">
-          <label for="nome">Nome <span class="required">*</span></label>
+          <label for="nome">Nome completo<span class="required">*</span></label>
           <input
             type="text"
             id="nome"
             formControlName="nome"
-            placeholder="Digite seu primeiro nome"
+            placeholder="Digite seu nome completo"
             aria-required="true"
           />
           @if (nome?.touched && nome?.invalid) {
