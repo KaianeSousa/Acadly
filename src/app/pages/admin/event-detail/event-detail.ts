@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {EventService} from '../../../core/service/event-service';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, DatePipe} from '@angular/common';
 import {Event} from '../../../core/types/Event';
 import {EventModalForm} from '../../../components/event-modal-form/event-modal-form';
 import {ToastService} from '../../../core/service/toast-service';
@@ -17,6 +17,7 @@ import {Pagination} from '../../../core/types/Pagination';
     RouterLink,
     EventModalForm,
     ActivityManagement,
+    DatePipe
   ],
   templateUrl: './event-detail.html',
   styleUrl: './event-detail.scss'

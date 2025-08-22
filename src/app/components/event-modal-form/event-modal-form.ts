@@ -27,12 +27,6 @@ export class EventModalForm implements OnInit {
 
   private fb = inject(FormBuilder);
 
-  private formatDateForInput(dateStr: string | undefined): string {
-    if (!dateStr) return '';
-    const [day, month, year] = dateStr.split('/');
-    return `${year}-${month}-${day}`;
-  }
-
   ngOnInit(): void {
     this.isEditMode = !!this.event;
 
@@ -40,9 +34,10 @@ export class EventModalForm implements OnInit {
       id: [this.event?.id || null],
       name: [this.event?.name || '', Validators.required],
       description: [this.event?.description || '', Validators.required],
-      initialDate: [this.formatDateForInput(this.event?.initialDate), Validators.required],
-      finalDate: [this.formatDateForInput(this.event?.finalDate), Validators.required],
+      initialDateTime: [this.event?.initialDateTime, Validators.required],
+      finalDateTime: [this.event?.finalDateTime, Validators.required],
       local: [this.event?.local || '', Validators.required],
+      workload: [this.event?.workload || '', [Validators.required, Validators.min(1)]],
       isActive: [this.event?.isActive ?? true, Validators.required]
     });
   }

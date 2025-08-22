@@ -29,26 +29,33 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label for="initialDate">Data de Início</label>
-          <input id="initialDate"
-                 type="date"
-                 formControlName="initialDate"
-                 [max]="eventForm.get('finalDate')?.value"
+          <label for="initialDateTime">Data e hora de Início</label>
+          <input id="initialDateTime"
+                 type="datetime-local"
+                 formControlName="initialDateTime"
+                 [max]="eventForm.get('finalDateTime')?.value"
           >
         </div>
         <div class="form-group">
-          <label for="finalDate">Data de Fim</label>
-          <input id="finalDate"
-                 type="date"
-                 formControlName="finalDate"
-                 [min]="eventForm.get('initialDate')?.value"
+          <label for="finalDateTime">Data e hora de Fim</label>
+          <input id="finalDateTime"
+                 type="datetime-local"
+                 formControlName="finalDateTime"
+                 [min]="eventForm.get('initialDateTime')?.value"
           >
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="local">Local</label>
-        <input id="local" type="text" formControlName="local" placeholder="Ex: Praia Central">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="local">Local</label>
+          <input id="local" type="text" formControlName="local" placeholder="Ex: Praia Central">
+        </div>
+
+        <div class="form-group">
+          <label for="workload">Carga Horária (horas)</label>
+          <input id="workload" type="number" formControlName="workload" placeholder="Ex: 8">
+        </div>
       </div>
 
       <div class="form-group-inline">

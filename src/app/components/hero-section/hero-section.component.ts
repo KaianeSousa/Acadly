@@ -2,7 +2,7 @@ import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { Event } from "../../core/types/Event";
 import { EventService } from '../../core/service/event-service';
 import { ModalComponent } from '../modal/modal.component';
-import {AsyncPipe, NgOptimizedImage} from '@angular/common';
+import {AsyncPipe, DatePipe, NgOptimizedImage} from '@angular/common';
 import {catchError, map, Observable, of, startWith} from 'rxjs';
 
 interface EventState {
@@ -14,7 +14,7 @@ interface EventState {
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [NgOptimizedImage, ModalComponent, AsyncPipe],
+  imports: [NgOptimizedImage, ModalComponent, AsyncPipe, DatePipe],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.scss'
 })

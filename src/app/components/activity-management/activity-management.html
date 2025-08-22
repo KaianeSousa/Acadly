@@ -15,7 +15,7 @@
           @for (activity of result.data; track activity.id) {
             <tr>
               <td data-label="Nome">{{ activity.name }}</td>
-              <td data-label="Data">{{ activity.dateTime | date:'dd/MM/yyyy' }}</td>
+              <td data-label="Data e Hora">{{ activity.dateTime | date:'dd/MM/yyyy HH:mm' }}</td>
               <td data-label="Duração (min)">{{ activity.duration }}</td>
               <td data-label="Local">{{ activity.local }}</td>
               <td data-label="Ações">
@@ -43,7 +43,7 @@
         <button
           class="pagination-button"
           (click)="nextPage(result.pagination.page, result.pagination.totalPages)"
-                [disabled]="result.pagination.page === result.pagination.totalPages - 1">Próxima</button>
+          [disabled]="result.pagination.page === result.pagination.totalPages - 1">Próxima</button>
       </div>
     }
   } @else {

@@ -1,5 +1,3 @@
-// src/app/components/activity-management/activity-management.ts
-
 import {ChangeDetectorRef, Component, inject, Input, OnInit} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable, switchMap} from 'rxjs';
 import {Activity} from '../../core/types/Activity';

@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { Event } from '../../core/types/Event';
-import {NgClass} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-event-admin-card',
   imports: [
-    NgClass
+    NgClass,
+    DatePipe
   ],
   templateUrl: './event-admin-card.html',
   styleUrl: './event-admin-card.scss'

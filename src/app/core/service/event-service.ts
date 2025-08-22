@@ -4,7 +4,6 @@ import {catchError, Observable, switchMap, throwError} from "rxjs";
 import {Event} from "../types/Event";
 import {environment} from '../../../environment/enviroment';
 import {Pagination} from '../types/Pagination';
-import {format, parse} from 'date-fns';
 import {Participant} from '../types/Participant';
 
 
@@ -27,12 +26,8 @@ export class EventService {
 
   saveEvent(event: Event): Observable<Event> {
     const {id, ...eventData} = event;
-    const parsedInitialDate = parse(event.initialDate, 'yyyy-MM-dd', new Date());
-    const parsedFinalDate = parse(event.finalDate, 'yyyy-MM-dd', new Date());
     const payload = {
       ...eventData,
-      initialDate: format(parsedInitialDate, 'dd/MM/yyyy'),
-      finalDate: format(parsedFinalDate, 'dd/MM/yyyy'),
     };
 
     const saveOperation$ = id

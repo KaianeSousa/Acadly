@@ -69,7 +69,7 @@
     font-weight: 600;
     color: #555;
   }
-  input[type="text"], input[type="date"], textarea {
+  input[type="text"], input[type="datetime-local"], input[type="number"], textarea {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ccc;

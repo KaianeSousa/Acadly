@@ -1,9 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Activity} from '../../core/types/Activity';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-activity-modal',
-  imports: [],
+    imports: [
+        DatePipe
+    ],
   templateUrl: './activity-modal.html',
   styleUrl: './activity-modal.scss'
 })
