@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-  
+
     &__backdrop {
       position: absolute;
       top: 0;
@@ -18,7 +18,7 @@
       background: rgba(0, 0, 0, 0.5);
       cursor: pointer;
     }
-  
+
     &__content {
       background: var(--primary-color);
       border: 2px solid var(--secondary-color);
@@ -27,18 +27,18 @@
       width: 100%;
       max-width: 500px;
       position: relative;
-      box-shadow: 
+      box-shadow:
         0 0 12px rgba(97, 2, 2, 0.651),
         0 2px 8px rgba(0,0,0,0.1);
       z-index: 1001;
     }
-  
+
     &__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.5rem;
-  
+
       h2 {
         font-size: 1.5rem;
         font-weight: bold;
@@ -46,7 +46,7 @@
         margin: 0;
       }
     }
-  
+
     &__close {
       background: none;
       border: none;
@@ -56,22 +56,22 @@
       line-height: 1;
     }
   }
-  
+
   .form-group {
     margin-bottom: 1.5rem;
-  
+
     label {
       display: block;
       font-size: 1rem;
       font-weight: 500;
       color: var(--secondary-color, var(--color-aux));
       margin-bottom: 0.5rem;
-  
+
       .required {
         color: var(--tertiary-color, var(--color-aux));
       }
     }
-  
+
     input[type="text"],
     input[type="email"],
     select {
@@ -83,13 +83,13 @@
       color: var(--resources-color);
       box-sizing: border-box;
       transition: border-color 0.3s ease;
-  
+
       &:focus {
         outline: none;
         border-color: var(--tertiary-color, var(--secondary-color));
       }
     }
-  
+
     .custom-select {
         position: relative;
         user-select: none;
@@ -103,26 +103,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-      
+
         &:focus {
           outline: none;
           border-color: var(--tertiary-color);
           background-color: var(--focus-bg-color, var(--primary-color));
         }
-      
+
         &.open {
           border-color: var(--tertiary-color);
         }
-      
+
         .arrow {
           margin-left: 1rem;
           font-size: 0.8rem;
         }
-      
+
         .selected-value {
           flex-grow: 1;
         }
-      
+
         .options-list {
           position: absolute;
           top: calc(100% + 0.25rem);
@@ -139,18 +139,18 @@
           list-style: none;
           margin: 0;
           padding: 0;
-      
+
           li {
             padding: 0.5rem 1rem;
             cursor: pointer;
             color: var(--resources-color);
-      
+
             &.selected {
               background-color: var(--secondary-color);
               color: var(--primary-color);
               font-weight: bold;
             }
-      
+
             &:hover {
               background-color: var(--secondary-color);
               color: var(--primary-color);
@@ -158,18 +158,18 @@
           }
         }
       }
-      
-  
+
+
     .checkbox-group {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-  
+
       input[type="checkbox"] {
         width: 1.25rem;
         height: 1.25rem;
       }
-  
+
       label {
         font-size: 0.9rem;
         margin: 0;
@@ -182,7 +182,7 @@
     border-color: var(--tertiary-color, var(--secondary-color));
     background-color: var(--focus-bg-color, var(--primary-color));
     }
-  
+
     .error {
       color: var(--tertiary-color, var(--primary-color));
       font-size: 0.85rem;
@@ -190,12 +190,12 @@
       display: block;
     }
   }
-  
+
   .form-actions {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
-  
+
     button {
       padding: 0.75rem 1.5rem;
       border: none;
@@ -204,37 +204,37 @@
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s ease;
-  
+
       &[type="submit"] {
         background: var(--secondary-color, var(--tertiary-color));
         color: var(--primary-color);
-  
+
         &:disabled {
           background: var(--color-aux, var(--primary-color));
           cursor: not-allowed;
         }
       }
-  
+
       &[type="button"] {
         background: var(--color-aux, var(--primary-color));
         color: var(--secondary-color, var(--color-aux));
       }
     }
   }
-  
+
   @media (max-width: 768px) {
     .modal__content {
       max-width: 90%;
       padding: 1.5rem;
     }
-  
+
     .modal__header h2 {
       font-size: 1.3rem;
     }
-  
+
     .form-group {
       margin-bottom: 1.2rem;
-  
+
       input[type="text"],
       input[type="email"],
       select {
@@ -242,7 +242,7 @@
         font-size: 0.9rem;
       }
     }
-  
+
     .form-actions button {
       padding: 0.6rem 1.2rem;
       font-size: 0.9rem;

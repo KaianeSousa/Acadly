@@ -27,22 +27,27 @@ export class EventModalForm implements OnInit {
 
   private fb = inject(FormBuilder);
 
-  private formatDateForInput(dateStr: string | undefined): string {
-    if (!dateStr) return '';
-    const [day, month, year] = dateStr.split('/');
-    return `${year}-${month}-${day}`;
-  }
-
   ngOnInit(): void {
     this.isEditMode = !!this.event;
+    let coordinatorName = '';
+    let coordinatorInstitution = '';
+
+    if (this.event && this.event.coordinator) {
+      const parts = this.event.coordinator.split(',');
+      coordinatorName = parts[0]?.trim() || '';
+      coordinatorInstitution = parts.slice(1).join(',')?.trim() || '';
+    }
 
     this.eventForm = this.fb.group({
       id: [this.event?.id || null],
       name: [this.event?.name || '', Validators.required],
       description: [this.event?.description || '', Validators.required],
-      initialDate: [this.formatDateForInput(this.event?.initialDate), Validators.required],
-      finalDate: [this.formatDateForInput(this.event?.finalDate), Validators.required],
+      initialDateTime: [this.event?.initialDateTime, Validators.required],
+      finalDateTime: [this.event?.finalDateTime, Validators.required],
       local: [this.event?.local || '', Validators.required],
+      workload: [this.event?.workload || '', [Validators.required, Validators.min(1)]],
+      coordinatorName: [coordinatorName, Validators.required],
+      coordinatorInstitution: [coordinatorInstitution, Validators.required],
       isActive: [this.event?.isActive ?? true, Validators.required]
     });
   }
@@ -52,7 +57,15 @@ export class EventModalForm implements OnInit {
       this.eventForm.markAllAsTouched();
       return;
     }
-    this.save.emit(this.eventForm.value);
+
+    const formValue = this.eventForm.getRawValue();
+    const { coordinatorName, coordinatorInstitution, ...restOfEvent } = formValue;
+    const eventToSave: Event = {
+      ...restOfEvent,
+      coordinator: `${coordinatorName}, ${coordinatorInstitution}`
+    } as Event;
+
+    this.save.emit(eventToSave);
   }
 
   onClose(): void {

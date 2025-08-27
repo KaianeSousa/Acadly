@@ -4,7 +4,7 @@ import { CanActivateFn } from '@angular/router';
 import { redirectIfLoggedInGuard } from './redirect-if-logged-in-guard';
 
 describe('redirectIfLoggedInGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
+  const executeGuard: CanActivateFn = (...guardParameters) =>
       TestBed.runInInjectionContext(() => redirectIfLoggedInGuard(...guardParameters));
 
   beforeEach(() => {

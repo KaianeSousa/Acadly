@@ -4,7 +4,6 @@ import {map, Observable} from "rxjs";
 import {Activity} from "../types/Activity";
 import {Pagination} from '../types/Pagination';
 import {environment} from '../../../environment/enviroment';
-import {format, parse} from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +20,8 @@ export class ActivityService {
 
   saveActivity(activity: Activity, eventId: number): Observable<Activity> {
     const {id, ...activityData} = activity;
-
-    const date = parse(activity.dateTime, 'yyyy-MM-dd', new Date());
-
     const payload = {
       ...activityData,
-      dateTime: format(date, 'dd/MM/yyyy'),
     };
 
     if (id) {

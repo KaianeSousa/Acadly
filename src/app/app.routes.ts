@@ -1,10 +1,7 @@
 import { Routes } from '@angular/router';
-import { About } from './pages/about/about';
-
 import {AdminLogin} from './pages/admin-login/admin-login';
 import { EmployeeLogin } from './pages/employee-login/employee-login';
 import {PublicLayout} from './layouts/public-layout/public-layout';
-import {AdminLayout} from './pages/admin/admin-layout/admin-layout';
 import {authGuard} from './core/guards/auth.guard';
 import {redirectIfLoggedInGuard} from './core/guards/redirect-if-logged-in-guard';
 

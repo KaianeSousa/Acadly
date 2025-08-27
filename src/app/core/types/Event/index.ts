@@ -1,9 +1,11 @@
 export interface Event {
-    id?: number | null;
-    name: string;
-    description: string;
-    initialDate: string;
-    finalDate: string;
-    local: string;
-    isActive: boolean;
+  id?: number | null;
+  name: string;
+  description: string;
+  initialDateTime: string;
+  finalDateTime: string;
+  local: string;
+  coordinator: string;
+  workload: number;
+  isActive: boolean;
 }

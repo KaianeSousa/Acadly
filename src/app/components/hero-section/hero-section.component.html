@@ -1,6 +1,11 @@
-@if (event$ | async; as event) {
+@if (eventState$ | async; as state) {
 
-  @if (event) {
+  @if (state.loading) {
+    <div style="text-align: center; padding: 5rem 1.5rem; color: #555555;">
+      <h5 style="font-size: 1.5rem; font-weight: 500;">Carregando evento...</h5>
+    </div>
+  }
+  @else if (state.event) {
     <div class="container">
       <div class="container__card">
         <div class="container__card-body">
@@ -10,14 +15,14 @@
             </div>
 
             <div class="container__col container__col--content">
-              <h5 class="container__title">{{ event.name }}</h5>
+              <h5 class="container__title">{{ state.event.name }}</h5>
               <p class="container__date text-muted">
-                <small>De {{ event.initialDate }} até {{ event.finalDate }}</small>
+                <small>De {{ state.event.initialDateTime | date:'dd/MM/yyyy, HH:mm' }} até {{ state.event.finalDateTime | date:'dd/MM/yyyy, HH:mm' }}</small>
               </p>
-              <p class="container__subtitle">{{ event.description }}</p>
+              <p class="container__subtitle">{{ state.event.description }}</p>
               <div class="container__button-area">
                 <button class="container__button"
-                        [attr.aria-label]="'Cadastre sua presença no ' + event.name"
+                        [attr.aria-label]="'Cadastre sua presença no ' + state.event.name"
                         (click)="openParticipantModal()">
                   Cadastre sua presença
                 </button>
@@ -29,16 +34,17 @@
     </div>
   }
 
-}
-@else {
-  <div style="margin: 3rem auto; padding: 3rem 1.5rem; max-width: 1140px; border: 2px dashed #cccccc; border-radius: 0.5rem; text-align: center; color: #333333; background-color: #fafafa;">
-    <h5 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: #333333;">
-      Nenhum evento ativo no momento.
-    </h5>
-    <p style="font-size: 1.1rem; color: #333333;">
-      Por favor, volte mais tarde para conferir as novidades!
-    </p>
-  </div>
+  @else {
+    <div style="margin: 3rem auto; padding: 3rem 1.5rem; max-width: 1140px; border: 2px dashed #cccccc; border-radius: 0.5rem; text-align: center; color: #333333; background-color: #fafafa;">
+      <h5 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: #333333;">
+        Nenhum evento ativo no momento.
+      </h5>
+      <p style="font-size: 1.1rem; color: #333333;">
+        Por favor, volte mais tarde para conferir as novidades!
+      </p>
+    </div>
+  }
+
 }
 
 <app-modal></app-modal>

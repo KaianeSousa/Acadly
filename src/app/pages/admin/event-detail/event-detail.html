@@ -24,8 +24,10 @@
 
     <section class="event-info">
       <h2>Detalhes do Evento</h2>
-      <p><strong>Data:</strong> {{ event.initialDate }} a {{ event.finalDate }}</p>
+      <p><strong>Data:</strong> {{ event.initialDateTime | date:'dd/MM/yyyy, HH:mm' }} a {{ event.finalDateTime| date:'dd/MM/yyyy, HH:mm' }}</p>
       <p><strong>Local:</strong> {{ event.local }}</p>
+      <p><strong>Carga Horária:</strong> {{ event.workload }} horas</p>
+      <p><strong>Coordenador:</strong> {{ event.coordinator }}</p>
       <p><strong>Descrição:</strong> {{ event.description }}</p>
     </section>
     <hr>
@@ -41,6 +43,46 @@
         <app-activity-management #activityManager [eventId]="event.id"></app-activity-management>
       } @else {
         <p>Carregando atividades...</p>
+      }
+    </section>
+    <hr>
+
+    <section class="participants-section">
+      <h2>Participantes Inscritos ({{ totalElements }})</h2>
+      @if (isLoadingParticipants) {
+        <p>Carregando participantes...</p>
+      } @else {
+        @if (participants.length > 0) {
+          <div class="participants-table-container">
+            <table>
+              <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (participant of participants; track participant.id) {
+                  <tr>
+                    <td data-label="Nome">{{ participant.name }}</td>
+                    <td data-label="Email">{{ participant.email }}</td>
+                    <td data-label="Tipo">{{ participant.participantType }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (totalPages > 1) {
+            <div class="pagination-controls">
+              <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 0" class="pagination-button">Anterior</button>
+              <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+              <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage + 1 >= totalPages" class="pagination-button">Próxima</button>
+            </div>
+          }
+        } @else {
+          <p class="no-participants-message">Nenhum participante inscrito neste evento ainda.</p>
+        }
       }
     </section>
   } @else {
