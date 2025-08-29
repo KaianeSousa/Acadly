@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToEventsPage() {
-    this.router.navigate(['/app-events']);
+    this.router.navigate(['/']);
   }
 
   goToInstitutionPage() {
@@ -66,10 +66,6 @@ export class NavbarComponent implements OnInit {
 
   goToAboutUsPage() {
     return this.router.navigate(['/about-us'])
-  }
-
-  goToCheckIn() {
-    this.router.navigate(['/check-in']);
   }
 
   navigateTo(path: string) {
