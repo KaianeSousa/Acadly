@@ -20,7 +20,7 @@
       </p>
 
       <p class="about-us__content__text">
-        Tivemos a orientação da professora <strong>Jéssica</strong>, que acompanhou o processo de desenvolvimento, ainda que curto. 
+        Tivemos a orientação da professora <strong>Jéssica de Paulo Rodrigues</strong>, que acompanhou o processo de desenvolvimento, ainda que curto. 
         Portanto, pedimos compreensão se houverem falhas ou pontos a melhorar. 
       </p>
     </div>
@@ -37,10 +37,11 @@
               <h3 class="student-card__name">{{ student.name }}</h3>
               
               <div class="student-card__social-links">
-                <a [href]="student.githubUrl" target="_blank" aria-label="Perfil do GitHub">
+                <a *ngIf="student.githubUrl" [href]="student.githubUrl" target="_blank" aria-label="Perfil do GitHub">
                   <i class="fa-brands fa-github student-card__social-icon"></i>
                 </a>
-                <a [href]="student.linkedinUrl" target="_blank" aria-label="Perfil do LinkedIn">
+                
+                <a *ngIf="student.linkedinUrl" [href]="student.linkedinUrl" target="_blank" aria-label="Perfil do LinkedIn">
                   <i class="fa-brands fa-linkedin student-card__social-icon"></i>
                 </a>
               </div>
