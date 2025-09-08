@@ -1,116 +1,91 @@
 <nav class="navbar" [class.menu-aberto]="openMenu">
   <div class="navbar__brand">
-      <a
-        class="navbar__logo"
-        tabindex="0"
-        role="button"
-        (click)="goToHome()"
-        (keydown.enter)="goToHome()"
-        (keydown.space)="goToHome()"
-        >
-        <img ngSrc="assets/logo.png" alt="Logo" width="60" height="60"/>
-      </a>
-      <div class="navbar__title">Acadly</div>
-    </div>
+    <a
+      class="navbar__logo"
+      tabindex="0"
+      role="button"
+      (click)="goToHome()"
+      (keydown.enter)="goToHome()"
+      (keydown.space)="goToHome()"
+    >
+      <img ngSrc="assets/logo.png" alt="Logo" width="60" height="60"/>
+    </a>
+  </div>
 
   <div class="navbar__center">
-      <div class="navbar__links">
-        <ul>
-          <li
-            role="button"
-            tabindex="0"
-            (click)="goToEventsPage()"
-            (keydown.enter)="goToEventsPage()"
-            (keydown.space)="goToEventsPage()"
-          >
-            Eventos
-          </li>
-          <li
-            role="button"
-            tabindex="0"
-            (click)="goToInstitutionPage()"
-            (keydown.enter)="goToInstitutionPage()"
-            (keydown.space)="goToInstitutionPage()"
-          >
-            Instituição
+    <div class="navbar__links">
+      <ul>
+        <li
+          role="button"
+          tabindex="0"
+          (click)="goToEventsPage()"
+          (keydown.enter)="goToEventsPage()"
+          (keydown.space)="goToEventsPage()"
+        >
+          Eventos
         </li>
-          <li
-            role="button"
-            tabindex="0"
-            (click)="goToAboutUspage()"
-            (keydown.enter)="goToAboutUspage()"
-            (keydown.space)="goToAboutUspage()"
-          >
-            Sobre nós
-          </li>
-          <li
-            role="button"
-            tabindex="0"
-            (click)="goToCheckIn()"
-            (keydown.enter)="goToCheckIn()"
-            (keydown.space)="goToCheckIn()"
-          >
-            Check-in
-          </li>
-        </ul>
-      </div>
+        <li
+          role="button"
+          tabindex="0"
+          (click)="goToInstitutionPage()"
+          (keydown.enter)="goToInstitutionPage()"
+          (keydown.space)="goToInstitutionPage()"
+        >
+          Instituição
+        </li>
+        <li
+          role="button"
+          tabindex="0"
+          (click)="goToAboutUsPage()"
+          (keydown.enter)="goToAboutUsPage()"
+          (keydown.space)="goToAboutUsPage()"
+        >
+          Sobre nós
+      </li>
+
+      </ul>
+    </div>
   </div>
 
   <div class="navbar__right">
-    <a
-      class="navbar__button"
-      tabindex="0"
-      role="button"
-      (click)="goToLogin()"
-      (keydown.enter)="goToLogin()"
-      (keydown.space)="goToLogin()"
-      >
-      Entrar
-    </a>
+    @if (!isLoggedIn()) {
+      <div class="navbar__dropdown-container">
+        <a
+          class="navbar__button navbar__dropdown-toggle"
+          tabindex="0"
+          role="button"
+          (click)="toggleAdminDropdown()"
+          (keydown.enter)="toggleAdminDropdown()"
+          (keydown.space)="toggleAdminDropdown()"
+          aria-haspopup="true"
+          [attr.aria-expanded]="isAdminDropdownOpen"
+        >
+          <span class="enter">Entrar</span> &#9662; </a>
 
-    <div
-      *ngIf="isLoggedIn"
-      class="navbar__user-menu"
-      (click)="toggleDropdown()"
-      (keydown.enter)="toggleDropdown()"
-      (keydown.space)="toggleDropdown()"
-      tabindex="0"
-      role="button"
-      >
-      <div class="navbar__user-avatar">
-        {{ user?.name?.charAt(0) | uppercase }}
+        @if (isAdminDropdownOpen) {
+          <ul class="navbar__admin-dropdown" role="menu">
+            @for (link of adminLinks; track link.path) {
+              <li
+                role="menuitem"
+                tabindex="0"
+                (click)="navigateTo(link.path)"
+                (keydown.enter)="navigateTo(link.path)"
+                (keydown.space)="navigateTo(link.path)"
+              >
+                {{ link.label }}
+              </li>
+            }
+          </ul>
+        }
       </div>
-      <div class="navbar__dropdown" *ngIf="openDropdown" (click)="$event.stopPropagation()">
-        <ul role="menu">
-          <li>
-            <a
-              class="navbar__profile"
-              role="menuitem"
-              (click)="goToProfile()"
-              (keydown)="handleKeydown($event, goToProfile)"
-              aria-label="Go to user profile"
-            >
-              Meu perfil
-            </a>
-          </li>
-          <li>
-            <button
-              class="navbar__logout"
-              role="menuitem"
-              (click)="logout()"
-              (keydown)="handleKeydown($event, logout)"
-              aria-label="Log out of the application"
-            >
-              Sair
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
+    }
   </div>
 
-  <button class="navbar__toggle" (click)="openMenu = !openMenu">
-      &#9776;
-  </button>
+  <app-burger-button
+    class="navbar__toggle"
+    [isOpen]="openMenu"
+    (toggled)="toggleMobileMenu()"
+  ></app-burger-button>
+
 </nav>
 

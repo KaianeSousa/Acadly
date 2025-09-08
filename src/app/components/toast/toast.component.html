@@ -1,0 +1,6 @@
+<div [@toastAnimation] [ngClass]="toastClasses">
+  <div class="toast__message">{{ toast.message }}</div>
+  <button class="toast__close-button" (click)="onClose()">
+    &times;
+  </button>
+</div>

@@ -2,17 +2,24 @@ import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { Event } from "../../core/types/Event";
 import { EventService } from '../../core/service/event-service';
 import { ModalComponent } from '../modal/modal.component';
-import {NgOptimizedImage} from '@angular/common';
+import {AsyncPipe, DatePipe, NgOptimizedImage} from '@angular/common';
+import {catchError, map, Observable, of, startWith} from 'rxjs';
+
+interface EventState {
+  loading: boolean;
+  event: Event | null;
+}
+
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [ModalComponent, NgOptimizedImage],
+  imports: [NgOptimizedImage, ModalComponent, AsyncPipe, DatePipe],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.scss'
 })
 export class HeroSectionComponent implements OnInit {
-  event?: Event;
+  eventState$!: Observable<EventState>;
 
   private eventService = inject(EventService);
   @ViewChild(ModalComponent) modal!: ModalComponent;
@@ -23,19 +30,16 @@ export class HeroSectionComponent implements OnInit {
     }
   }
 
-  onModalClose() {
-  }
-
   ngOnInit(): void {
     this.getEvent();
   }
 
   getEvent() {
-    this.eventService.getEvent().subscribe({
-      next: (eventData) => {
-        this.event = eventData;
-      },
-    });
+    this.eventState$ = this.eventService.getEvent().pipe(
+      map(eventData => ({ loading: false, event: eventData })),
+      startWith({ loading: true, event: null }),
+      catchError(() => of({ loading: false, event: null }))
+    );
   }
-}
 
+}

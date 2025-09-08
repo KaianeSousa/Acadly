@@ -1,0 +1,67 @@
+<div class="modal-overlay"
+(click)="onClose()"
+(keydown.enter)="onClose()"
+(keydown.space)="onClose()"
+tabindex="0"
+role="button">
+    <div class="modal-content" 
+    (click)="$event.stopPropagation()"
+    (keydown.enter)="$event.stopPropagation()"
+    (keydown.space)="$event.stopPropagation()"
+    tabindex="0"
+    role="button"
+    >
+      <header class="modal-header">
+        <h2>{{ isEditMode ? 'Editar dados do funcionário' : 'Adicionar um funcionário' }}</h2>
+        <button class="close-button" 
+        (click)="onClose()"
+        (keydown.enter)="onClose()"
+        (keydown.space)="onClose()"
+        tabindex="0"
+        role="button"
+         aria-label="Fechar modal">&times;</button>
+      </header>
+  
+      <form class="modal-body" [formGroup]="employeeForm" (ngSubmit)="onSave()">
+        <div class="form-group">
+          <label for="name">Nome :</label>
+          <input id="name" type="text" formControlName="name" placeholder="Enzo, Valentina, Gael, Luna...">
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" placeholder="exemplo@gmail.com">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.invalid]="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched"
+            >
+            @if (employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched) {
+              <div class="validation-error">
+                @if (employeeForm.get('password')?.hasError('required')) {
+                  <span>A senha é obrigatória.</span>
+                }
+              </div>
+            }
+          </div>
+  
+        <footer class="modal-footer">
+          <button type="button" class="button-secondary" 
+          (click)="onClose()"
+          (keydown.enter)="onClose()"
+          (keydown.space)="onClose()"
+          tabindex="0"
+          role="button"
+          >Cancelar</button>
+          <button type="submit" class="button-primary">{{ isEditMode ? 'Salvar Alterações' : 'Cadastrar funcionário' }}</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+  

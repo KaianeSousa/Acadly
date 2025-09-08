@@ -1,0 +1,74 @@
+@if (activities$ | async; as result) {
+  @if (result.data.length > 0) {
+    <div class="table-container">
+      <table class="activities-table">
+        <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data e Hora</th>
+          <th>Duração (min)</th>
+          <th>Local</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (activity of result.data; track activity.id) {
+            <tr>
+              <td data-label="Nome">{{ activity.name }}</td>
+              <td data-label="Data e Hora">{{ activity.dateTime | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td data-label="Duração (min)">{{ activity.duration }}</td>
+              <td data-label="Local">{{ activity.local }}</td>
+              <td data-label="Ações">
+                <div class="action-buttons">
+                  <button (click)="onEditActivity(activity)" class="action-button edit-btn" aria-label="Editar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  </button>
+                  <button (click)="onDeleteActivity(activity.id)" class="action-button delete-btn" aria-label="Excluir">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (result.pagination.totalPages > 1) {
+      <div class="pagination-controls">
+        <button
+          class="pagination-button"
+          (click)="previousPage(result.pagination.page)" [disabled]="result.pagination.page === 0">Anterior</button>
+        <span>Página {{ result.pagination.page + 1 }} de {{ result.pagination.totalPages }}</span>
+        <button
+          class="pagination-button"
+          (click)="nextPage(result.pagination.page, result.pagination.totalPages)"
+          [disabled]="result.pagination.page === result.pagination.totalPages - 1">Próxima</button>
+      </div>
+    }
+  } @else {
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <h3>Nenhuma atividade cadastrada</h3>
+      <p>Clique em "Adicionar Atividade" para começar.</p>
+    </div>
+  }
+} @else {
+  <div class="loading-state">Carregando atividades...</div>
+}
+
+@if (isFormModalVisible) {
+  <app-activity-modal-form
+    [activity]="selectedActivity"
+    (closeModal)="closeFormModal()"
+    (save)="saveActivity($event)">
+  </app-activity-modal-form>
+}
+
+@if (isAlertModalVisible) {
+  <app-alert-modal
+    title="Confirmar Exclusão"
+    message="Tem certeza que deseja excluir esta atividade? A ação não pode ser desfeita."
+    (modalClose)="handleAlertClose($event)">
+  </app-alert-modal>
+}

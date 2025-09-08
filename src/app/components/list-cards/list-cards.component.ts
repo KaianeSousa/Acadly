@@ -2,13 +2,12 @@ import {
   Component,
   OnInit,
   inject,
-  HostListener,
   ViewChild,
-  AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef
+  ElementRef,
+  PLATFORM_ID, OnDestroy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {register, SwiperContainer} from 'swiper/element/bundle';
@@ -16,128 +15,97 @@ import { Activity } from '../../core/types/Activity';
 import { ActivityService } from '../../core/service/activity-service';
 import { CardsComponent } from '../cards/cards.component';
 import {Pagination} from '../../core/types/Pagination';
+import {ActivityModal} from '../activity-modal/activity-modal';
+import {catchError, map, Observable, of, startWith} from 'rxjs';
+import {SwiperOptions} from 'swiper/types';
 
 register();
 
+interface ActivitiesState {
+  loading: boolean;
+  activities: Pagination<Activity> | null;
+}
+
 @Component({
   selector: 'app-list-cards',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     NgSelectModule,
-    CardsComponent
+    CardsComponent,
+    ActivityModal
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './list-cards.component.html',
   styleUrls: ['./list-cards.component.scss']
 })
-export class ListCardsComponent implements OnInit, AfterViewInit {
-  private assetService = inject(ActivityService);
-  activities: Pagination<Activity> = {
-    data: [],
-    pagination: {
-      page: 0,
-      pageSize: 0,
-      totalElements: 0,
-      totalPages: 0,
-    },
-  };
-  isMobile = false;
-  private viewInitialized = false;
-  private swiperInitialized = false;
+export class ListCardsComponent implements OnInit, OnDestroy {
+  activitiesState$!: Observable<ActivitiesState>;
 
-  @ViewChild('swiperContainer') swiperContainerRef!: ElementRef<SwiperContainer>;
+  private readonly platformId = inject(PLATFORM_ID);
+  private assetService = inject(ActivityService);
+
+  private swiperContainerEl: ElementRef<SwiperContainer> | undefined;
+  @ViewChild('swiperContainer') set swiperContainer(el: ElementRef<SwiperContainer>) {
+    if (el) {
+      this.swiperContainerEl = el;
+      this.initializeSwiper();
+    }
+  }
+
+  isModalVisible = false;
+  selectedActivity: Activity | null = null;
 
   ngOnInit(): void {
-    this.checkScreen();
-    this.getAllActivities();
+    this.loadActivities();
   }
 
-  ngAfterViewInit(): void {
-    this.viewInitialized = true;
-    this.initSwiperIfNeeded();
+  ngOnDestroy(): void {
+    this.swiperContainerEl?.nativeElement?.swiper?.destroy(true, true);
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    this.checkScreen();
-    this.initSwiperIfNeeded();
+  loadActivities(): void {
+    this.activitiesState$ = this.assetService.getAllActivities().pipe(
+      map(data => ({ loading: false, activities: data })),
+      startWith({ loading: true, activities: null }),
+      catchError(() => of({ loading: false, activities: null }))
+    );
   }
 
-  checkScreen() {
-    this.isMobile = window.innerWidth <= 768;
-  }
-
-  getAllActivities(): void {
-      this.assetService.getAllActivities().subscribe(data => {
-        this.activities = data;
-        this.initSwiperIfNeeded();
-      });
-  }
-
-  private initSwiperIfNeeded() {
-    if (this.activities.data.length > 0 && this.viewInitialized) {
-      this.initSwiper();
-    }
-  }
-
-  private initSwiper() {
-    if (!this.swiperContainerRef?.nativeElement) {
-      console.error("Swiper container não encontrado!");
+  initializeSwiper(): void {
+    if (!isPlatformBrowser(this.platformId) || !this.swiperContainerEl?.nativeElement) {
       return;
     }
 
-    if (this.swiperInitialized) {
-      this.swiperContainerRef.nativeElement.swiper?.update();
-      return;
-    }
-    const swiperParams = this.isMobile
-      ? {
-          slidesPerView: 1,
-          spaceBetween: 16,
-          centeredSlides: true,
-          pagination: {
-            clickable: true,
-            type: 'bullets',
-          },
-          navigation: false,
-          breakpoints: {
-            640: {
-              slidesPerView: 1.2,
-            },
-            768: {
-              slidesPerView: 1.5,
-            },
-          },
-        }
-      : {
+    const swiperEl = this.swiperContainerEl.nativeElement;
+    if (swiperEl.swiper) return;
+
+    const swiperOptions: SwiperOptions = {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      centeredSlides: true,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      breakpoints: {
+        769: {
           slidesPerView: 3,
           spaceBetween: 20,
           centeredSlides: false,
           pagination: false,
-          navigation: {
-            nextEl: '.carousel__nav-next',
-            prevEl: '.carousel__nav-prev',
-          },
-          breakpoints: {
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-            1200: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-          },
-        };
+          navigation: { nextEl: '.carousel__nav-next', prevEl: '.carousel__nav-prev' },
+        }
+      },
+    };
 
-    Object.assign(this.swiperContainerRef.nativeElement, swiperParams);
+    Object.assign(swiperEl, swiperOptions);
+    swiperEl.initialize();
+  }
 
-    if (!this.swiperContainerRef.nativeElement.swiper) {
-      this.swiperContainerRef.nativeElement.initialize();
-    } else {
-      this.swiperContainerRef.nativeElement.swiper.update();
-    }
+  showDetails(activity: Activity): void {
+    this.selectedActivity = activity;
+    this.isModalVisible = true;
+  }
+
+  hideDetails(): void {
+    this.isModalVisible = false;
   }
 }

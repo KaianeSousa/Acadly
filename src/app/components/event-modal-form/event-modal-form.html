@@ -1,0 +1,83 @@
+<div class="modal-overlay"
+     (click)="onClose()"
+     (keydown.enter)="onClose()"
+     (keydown.space)="onClose()"
+     tabindex="0"
+     role="button"
+>
+  <div class="modal-content"
+       (click)="$event.stopPropagation()"
+       (keydown.enter)="$event.stopPropagation()"
+       (keydown.space)="$event.stopPropagation()"
+       tabindex="0"
+       role="button">
+    <header class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Evento' : 'Adicionar Novo Evento' }}</h2>
+      <button class="close-button" (click)="onClose()" aria-label="Fechar modal">&times;</button>
+    </header>
+
+    <form class="modal-body" [formGroup]="eventForm" (ngSubmit)="onSave()">
+      <div class="form-group">
+        <label for="name">Nome do Evento</label>
+        <input id="name" type="text" formControlName="name" placeholder="Ex: Festival de Verão">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <textarea id="description" formControlName="description" rows="3" placeholder="Descreva o evento..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="initialDateTime">Data e hora de Início</label>
+          <input id="initialDateTime"
+                 type="datetime-local"
+                 formControlName="initialDateTime"
+                 [max]="eventForm.get('finalDateTime')?.value"
+          >
+        </div>
+        <div class="form-group">
+          <label for="finalDateTime">Data e hora de Fim</label>
+          <input id="finalDateTime"
+                 type="datetime-local"
+                 formControlName="finalDateTime"
+                 [min]="eventForm.get('initialDateTime')?.value"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="local">Local</label>
+          <input id="local" type="text" formControlName="local" placeholder="Ex: IFCE - Campus ...">
+        </div>
+
+        <div class="form-group">
+          <label for="workload">Carga Horária (horas)</label>
+          <input id="workload" type="number" formControlName="workload" placeholder="Ex: 8">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coordinatorName">Nome do(a) Coordenador(a)</label>
+          <input id="coordinatorName" type="text" formControlName="coordinatorName" placeholder="Ex: João da Silva">
+        </div>
+
+        <div class="form-group">
+          <label for="coordinatorInstitution">Instituição do Coordenador</label>
+          <input id="coordinatorInstitution" type="text" formControlName="coordinatorInstitution" placeholder="Ex: IFCE - Campus ...">
+        </div>
+      </div>
+      <div class="form-group-inline">
+        <input id="isActive" type="checkbox" formControlName="isActive">
+        <label for="isActive">Evento Ativo</label>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="button-secondary" (click)="onClose()">Cancelar</button>
+        <button type="submit" class="button-primary">{{ isEditMode ? 'Salvar Alterações' : 'Criar Evento' }}</button>
+      </footer>
+    </form>
+  </div>
+</div>

@@ -1,22 +1,49 @@
-<div class="list">
-  <div class="list__text">
-    <h3>Confira nossa programação</h3>
-  </div>
-  <div class="list__sort">
-    <ng-select (open)="getAllActivities()"></ng-select>
-  </div>
+@if (activitiesState$ | async; as state) {
 
-  <div class="carousel__container">
-    @if (!isMobile) {
-      <div class="carousel__nav-prev"></div>
-      <div class="carousel__nav-next"></div>
-    }
-    <swiper-container #swiperContainer>
-      @for (activity of activities.data; track activity.id) {
-        <swiper-slide>
-          <app-cards [activity]="activity"></app-cards>
-        </swiper-slide>
-      }
-    </swiper-container>
-  </div>
-</div>
+  @if (state.loading) {
+    <div class="status-message">
+      <p>Carregando atividades...</p>
+    </div>
+  }
+
+  @else if (state.activities && state.activities.data.length > 0) {
+    <div class="list">
+      <div class="carousel__container">
+        <swiper-container #swiperContainer init="false">
+          @for (activity of state.activities.data; track activity.id) {
+            <swiper-slide>
+              <app-cards [activity]="activity" (click)="showDetails(activity)"></app-cards>
+            </swiper-slide>
+          }
+        </swiper-container>
+
+        <div class="swiper-pagination"></div>
+
+        <button class="carousel__nav-prev">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <button class="carousel__nav-next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  @else {
+    <div class="status-message status-message--empty">
+      <h5>Nenhuma atividade encontrada no momento.</h5>
+      <p>Por favor, volte mais tarde para conferir as novidades!</p>
+    </div>
+  }
+}
+
+<app-activity-modal
+  [isVisible]="isModalVisible"
+  [activity]="selectedActivity"
+  (closeModal)="hideDetails()">
+</app-activity-modal>

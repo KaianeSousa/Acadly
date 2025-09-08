@@ -64,51 +64,34 @@
     .carousel__nav-prev,
     .carousel__nav-next {
       position: absolute;
-      top: 50%;
+      top: 45%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.5);
+      width: 44px;
+      height: 44px;
+      z-index: 20;
+      background-color: #ffffff;
       border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      color: var(--secondary-color);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      transition: background 0.3s ease;
-    }
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+      border: none;
+      padding: 0;
 
-    .carousel__nav-prev:hover,
-    .carousel__nav-next:hover {
-      background: rgba(0, 0, 0, 0.7);
-    }
+      &:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
 
-    .carousel__nav-prev::before,
-    .carousel__nav-next::before {
-      content: '';
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border: solid var(--tertiary-color);
-      border-width: 0 3px 3px 0;
-    }
-
-    .carousel__nav-prev::before {
-      transform: rotate(135deg);
-      margin-right: 4px;
-    }
-
-    .carousel__nav-next::before {
-      transform: rotate(-45deg);
-      margin-left: 4px;
-    }
-
-    .carousel__nav-prev {
-      left: -60px;
-    }
-
-    .carousel__nav-next {
-      right: -60px;
+      &.swiper-button-disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
     }
 
     .carousel-card {
@@ -117,6 +100,11 @@
       margin: 0 auto 10px auto;
       transform: translateZ(0);
     }
+  }
+
+  .carousel__nav-prev svg,
+  .carousel__nav-next svg {
+    pointer-events: none;
   }
 
   @media (max-width: 768px) {
@@ -148,6 +136,33 @@
       .carousel-card {
         max-width: 333px;
       }
+    }
+  }
+}
+.carousel__nav-prev {
+  left: 16px;
+}
+
+.carousel__nav-next {
+  right: 16px;
+}
+
+.status-message {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  color: #555;
+
+  &--empty {
+    margin: 2rem auto;
+    max-width: 1140px;
+    border: 2px dashed #cccccc;
+    border-radius: 0.5rem;
+    background-color: #f8f9fa;
+
+    h5 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
     }
   }
 }

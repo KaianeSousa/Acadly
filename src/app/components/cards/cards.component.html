@@ -1,16 +1,22 @@
-<div class="card" aria-label="Cartão de atividade">
-  <div class="card__content">
-    <h2 class="card__content__title" aria-label="Nome da atividade">
-      {{ activity.name }}
-    </h2>
-    <h3 class="dateTime" aria-label="Data da atividade">Data: <p aria-label="Data">{{ activity.dateTime }}</p></h3>
-    <h3 class="duration" aria-label="Duração prevista da atividade">
-      Previsão de duração:
-      <p aria-label="Duração em horas">{{ activity.duration }} horas</p>
-    </h3>
-    <h4 class="description"  aria-label="Descrição da atividade">
-      {{ activity.description }}
-    </h4>
-  </div>
-</div>
+<div class="card">
+  <h2 class="card-title">{{ activity.name }}</h2>
 
+  <div class="card-details">
+    <div class="detail-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+      </svg>
+      <span>{{ activity.dateTime | date:'dd/MM/yyyy, HH:mm' }}</span>
+    </div>
+    <div class="detail-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+      </svg>
+      <span>{{ activity.duration }} min</span>
+    </div>
+  </div>
+  <p class="card-description">
+    {{ activity.description }}
+  </p>
+</div>

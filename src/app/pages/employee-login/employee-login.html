@@ -1,0 +1,22 @@
+<div class="login-container">
+    <div class="login-card">
+      <button class="back-button" (click)="goToHome()" aria-label="Voltar para a página inicial">
+        &times; </button>
+  
+      <div class="login-header">
+        <img ngSrc="assets/logo.png" alt="Acadly Logo" class="login-logo" height="60" width="60">
+        <h2>Acesso do funcionário</h2>
+      </div>
+  
+      <app-auth-form
+        [isLoading]="isLoading"
+        [errorMessage]="errorMessage"
+        submitLabel="Entrar"
+        (formSubmit)="handleLoginSubmit($event)"
+      ></app-auth-form>
+  
+      <div class="extra-links">
+        <a href="/forgot-password">Esqueceu a senha? Entre em contato com o administrador.</a>
+      </div>
+    </div>
+  </div>

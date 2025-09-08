@@ -1,0 +1,99 @@
+<div class="event-detail-page">
+  @if (event$ | async; as event) {
+    <header class="page-header">
+      <div class="title-container">
+        <h1>{{ event.name }}</h1>
+        @if (event.isActive) {
+          <span class="status status--active">Ativo</span>
+        } @else {
+          <span class="status status--inactive">Inativo</span>
+        }
+      </div>
+      <div class="header-actions">
+        <button (click)="onEditEvent(event)" class="edit-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Editar Evento</span>
+        </button>
+        <a routerLink="/admin/events" class="back-button">Voltar para a lista</a>
+      </div>
+    </header>
+
+    <section class="event-info">
+      <h2>Detalhes do Evento</h2>
+      <p><strong>Data:</strong> {{ event.initialDateTime | date:'dd/MM/yyyy, HH:mm' }} a {{ event.finalDateTime| date:'dd/MM/yyyy, HH:mm' }}</p>
+      <p><strong>Local:</strong> {{ event.local }}</p>
+      <p><strong>Carga Horária:</strong> {{ event.workload }} horas</p>
+      <p><strong>Coordenador:</strong> {{ event.coordinator }}</p>
+      <p><strong>Descrição:</strong> {{ event.description }}</p>
+    </section>
+    <hr>
+    <section class="activities-management">
+      @if(event.id) {
+        <div class="activities-header">
+          <h2>Gerenciamento de Atividades</h2>
+          <button (click)="activityManager.onAddActivity()" class="add-activity-button">
+            <span>Adicionar Atividade</span>
+          </button>
+        </div>
+
+        <app-activity-management #activityManager [eventId]="event.id"></app-activity-management>
+      } @else {
+        <p>Carregando atividades...</p>
+      }
+    </section>
+    <hr>
+
+    <section class="participants-section">
+      <h2>Participantes Inscritos ({{ totalElements }})</h2>
+      @if (isLoadingParticipants) {
+        <p>Carregando participantes...</p>
+      } @else {
+        @if (participants.length > 0) {
+          <div class="participants-table-container">
+            <table>
+              <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (participant of participants; track participant.id) {
+                  <tr>
+                    <td data-label="Nome">{{ participant.name }}</td>
+                    <td data-label="Email">{{ participant.email }}</td>
+                    <td data-label="Tipo">{{ participant.participantType }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (totalPages > 1) {
+            <div class="pagination-controls">
+              <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 0" class="pagination-button">Anterior</button>
+              <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+              <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage + 1 >= totalPages" class="pagination-button">Próxima</button>
+            </div>
+          }
+        } @else {
+          <p class="no-participants-message">Nenhum participante inscrito neste evento ainda.</p>
+        }
+      }
+    </section>
+  } @else {
+    <p>Carregando detalhes do evento...</p>
+  }
+</div>
+
+@if (isModalVisible) {
+  <app-event-modal-form
+    [event]="selectedEventForEdit"
+    (closeModal)="closeModal()"
+    (save)="saveEvent($event)"
+  ></app-event-modal-form>
+}

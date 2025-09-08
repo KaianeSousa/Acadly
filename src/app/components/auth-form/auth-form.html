@@ -1,0 +1,58 @@
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()" novalidate>
+  @if (errorMessage) {
+    <div class="server-error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="seu.email@exemplo.com"
+      [class.invalid]="authForm.get('email')?.invalid && authForm.get('email')?.touched"
+    >
+    @if (authForm.get('email')?.invalid && authForm.get('email')?.touched) {
+      <div class="validation-error">
+        @if (authForm.get('email')?.hasError('required')) {
+          <span>O e-mail é obrigatório.</span>
+        }
+        @if (authForm.get('email')?.hasError('email')) {
+          <span>Por favor, insira um e-mail válido.</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="password">Senha</label>
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      placeholder="••••••••"
+      [class.invalid]="authForm.get('password')?.invalid && authForm.get('password')?.touched"
+    >
+    @if (authForm.get('password')?.invalid && authForm.get('password')?.touched) {
+      <div class="validation-error">
+        @if (authForm.get('password')?.hasError('required')) {
+          <span>A senha é obrigatória.</span>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="login-button"
+    [disabled]="isLoading"
+  >
+    @if (isLoading) {
+      <span>Carregando...</span>
+    } @else {
+      <span>{{ submitLabel }}</span>
+    }
+  </button>
+</form>
